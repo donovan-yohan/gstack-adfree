@@ -1,0 +1,66 @@
+plan-ceo-review/SKILL.md.tmpl
+  cdd53300fc3fa2b3 6
+scripts/resolvers/preamble.ts
+  4c06a52c3ee6d013 534,544
+office-hours/SKILL.md.tmpl
+  dcacd1577793bbb6 555
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "e00a799712ce8f0b4056115c03301712b3a27c9f",
+  "prompts": {
+    "4c06a52c3ee6d013": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_299b535e3ffe14gCUbLG4qF47M-99339d2a-d00a-477a-b806-71b4245a2cb0",
+        "model": "unknown"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 7,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    },
+    "98f31e0e4f8643a7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_299b535e3ffe14gCUbLG4qF47M-54a8b4cc-0129-404e-8f34-4122b3e0a82d",
+        "model": "unknown"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "cdd53300fc3fa2b3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_299b535e3ffe14gCUbLG4qF47M-ea73fa99-ec9e-44c8-bbc3-771c194db4fa",
+        "model": "unknown"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "dcacd1577793bbb6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_299b535e3ffe14gCUbLG4qF47M-e9b645ed-0fd1-4e81-bf85-3f3d75608f35",
+        "model": "unknown"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
