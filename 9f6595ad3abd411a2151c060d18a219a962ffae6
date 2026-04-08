@@ -1,0 +1,80 @@
+bin/gstack-team-init
+  ab119d9f1aa7622d 81
+  620dfefc92017a16 191
+  6ea1fdd7d9e53017 57,61
+  f5ad007c50cd3229 125
+setup
+  cf857449fd876874 117
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.6",
+  "base_commit_sha": "9f6595ad3abd411a2151c060d18a219a962ffae6",
+  "prompts": {
+    "620dfefc92017a16": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_29400510affeE1BqHyW2f8jxiD-da588cbd-247f-48ea-a605-0c95650d5677",
+        "model": "unknown"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "6ea1fdd7d9e53017": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_29400510affeE1BqHyW2f8jxiD-972d0b07-6f68-4758-a40a-3b1b468dffb8",
+        "model": "unknown"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 2,
+      "total_deletions": 2,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    },
+    "ab119d9f1aa7622d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_29400510affeE1BqHyW2f8jxiD-b594467f-e2b8-434c-b1e6-dba9bdb52d95",
+        "model": "unknown"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "cf857449fd876874": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_29400510affeE1BqHyW2f8jxiD-2cccee09-f604-48fe-a213-fbfb34a846e7",
+        "model": "unknown"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "f5ad007c50cd3229": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "opencode-transcript-ses_29400510affeE1BqHyW2f8jxiD-c3ec2033-ad11-449b-a3c8-79ca7470b350",
+        "model": "unknown"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
