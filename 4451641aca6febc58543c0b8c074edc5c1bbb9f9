@@ -1,0 +1,303 @@
+scripts/gen-skill-docs.ts
+  0f62edda9e0af7e0 46-59,61-63,428,537-544,546
+scripts/resolvers/make-pdf.ts
+  0f62edda9e0af7e0 1-50
+browse/test/security-integration.test.ts
+  0f62edda9e0af7e0 1-182
+model-overlays/gpt.md
+  0f62edda9e0af7e0 1-14
+model-overlays/gpt-5.4.md
+  0f62edda9e0af7e0 1-15
+scripts/resolvers/preamble.ts
+  0f62edda9e0af7e0 2-6,8-11,19-21,23-57,62,68,87,89-98,102
+test/helpers/providers/gemini.ts
+  0f62edda9e0af7e0 1-123
+test/helpers/session-runner.ts
+  0f62edda9e0af7e0 129-132,142,179
+make-pdf/src/cli.ts
+  0f62edda9e0af7e0 1-256
+test/skill-e2e-benchmark-providers.test.ts
+  0f62edda9e0af7e0 1-186
+VERSION
+  0f62edda9e0af7e0 1
+browse/src/cli.ts
+  0f62edda9e0af7e0 378-399,402-409
+model-overlays/gemini.md
+  0f62edda9e0af7e0 1-10
+browse/test/security-adversarial-fixes.test.ts
+  0f62edda9e0af7e0 1-137
+browse/test/security-bench.test.ts
+  0f62edda9e0af7e0 1-153
+make-pdf/src/pdftotext.ts
+  0f62edda9e0af7e0 1-254
+test/helpers/benchmark-runner.ts
+  0f62edda9e0af7e0 1-165
+.gitignore
+  0f62edda9e0af7e0 6
+scripts/resolvers/design.ts
+  0f62edda9e0af7e0 1013-1054
+office-hours/SKILL.md.tmpl
+  0f62edda9e0af7e0 206-213,268-274
+browse/src/commands.ts
+  0f62edda9e0af7e0 55-59,74,123,129
+test/gen-skill-docs.test.ts
+  0f62edda9e0af7e0 361-371
+scripts/resolvers/preamble/generate-context-recovery.ts
+  0f62edda9e0af7e0 1-51
+browse/test/fixtures/mock-claude/claude
+  0f62edda9e0af7e0 1-185
+browse/test/sidebar-security.test.ts
+  0f62edda9e0af7e0 114-118,125-161
+browse/test/pdf-flags.test.ts
+  0f62edda9e0af7e0 1-86
+bin/gstack-config
+  0f62edda9e0af7e0 5,7-8,18-19,21,31-32,44-53,69-89,98-102,138-162,165
+scripts/resolvers/model-overlay.ts
+  0f62edda9e0af7e0 1-60
+browse/test/sidebar-agent.test.ts
+  0f62edda9e0af7e0 465-469,504-507,509,555-560
+test/helpers/tool-map.ts
+  0f62edda9e0af7e0 1-82
+browse/src/sidebar-agent.ts
+  0f62edda9e0af7e0 16-27,51,71,245-359,368-370,378-397,399-404,427-536,538,544-550,552-555,598-741,763,779,915-941
+browse/src/security-classifier.ts
+  0f62edda9e0af7e0 1-533
+browse/test/security-e2e-fullstack.test.ts
+  0f62edda9e0af7e0 1-218
+browse/test/security-review-fullstack.test.ts
+  0f62edda9e0af7e0 1-405
+test/touchfiles.test.ts
+  0f62edda9e0af7e0 83,86-87
+bin/gstack-security-dashboard
+  0f62edda9e0af7e0 1-121
+make-pdf/src/orchestrator.ts
+  0f62edda9e0af7e0 1-234
+scripts/resolvers/preamble/generate-lake-intro.ts
+  0f62edda9e0af7e0 1-16
+make-pdf/src/print-css.ts
+  0f62edda9e0af7e0 1-361
+make-pdf/test/pdftotext.test.ts
+  0f62edda9e0af7e0 1-106
+scripts/resolvers/preamble/generate-repo-mode-section.ts
+  0f62edda9e0af7e0 1-12
+browse/src/write-commands.ts
+  0f62edda9e0af7e0 179-185,187-203,211-212,216-234
+scripts/resolvers/preamble/generate-completeness-section.ts
+  0f62edda9e0af7e0 1-19
+test/skill-e2e-plan.test.ts
+  0f62edda9e0af7e0 9,187-257
+scripts/resolvers/preamble/generate-voice-directive.ts
+  0f62edda9e0af7e0 1-60
+bin/gstack-taste-update
+  0f62edda9e0af7e0 1-293
+browse/src/server.ts
+  0f62edda9e0af7e0 28,529-554,581-586,612-616,647,1476-1480,1902-1906,1974-1995
+make-pdf/test/fixtures/combined-gate.expected.txt
+  0f62edda9e0af7e0 1-20
+package.json
+  0f62edda9e0af7e0 3,8-9,12-13,18,43,46
+make-pdf/test/fixtures/combined-gate.md
+  0f62edda9e0af7e0 1-30
+test/skill-e2e-session-intelligence.test.ts
+  0f62edda9e0af7e0 18,21-22,198-201,205-206,208,212-216,219,227,235,239,241,243,248,250-252,255-256,258-259,263,266-363
+test/skill-e2e-context-skills.test.ts
+  0f62edda9e0af7e0 1-514
+scripts/resolvers/preamble/generate-spawned-session-check.ts
+  0f62edda9e0af7e0 1-11
+test/fixtures/mode-posture/expansion-plan.md
+  0f62edda9e0af7e0 1-23
+browse/src/meta-commands.ts
+  0f62edda9e0af7e0 40-220,256-263,265-267,407-432
+scripts/resolvers/preamble/generate-test-failure-triage.ts
+  0f62edda9e0af7e0 1-108
+scripts/resolvers/preamble/generate-vendoring-deprecation.ts
+  0f62edda9e0af7e0 1-36
+test/helpers/providers/gpt.ts
+  0f62edda9e0af7e0 1-127
+test/taste-engine.test.ts
+  0f62edda9e0af7e0 1-392
+browse/test/security.test.ts
+  0f62edda9e0af7e0 1-322
+test/helpers/touchfiles.ts
+  0f62edda9e0af7e0 72-74,77-80,116-133,195-197,256-257,263,279-292,361-362
+supabase/functions/community-pulse/index.ts
+  0f62edda9e0af7e0 105-162,169-175,196-208
+context-save/SKILL.md.tmpl
+  0f62edda9e0af7e0 2,6-12,22-24,27,29,34,36,42-45,47-48,50-51,60,111,113-117,120-121,124-137,140,143-147,155,187,191,196,203,206-207,210-213,221,223,226,232,236-238,245,249-251,255-256,262-266,268-271
+make-pdf/src/types.ts
+  0f62edda9e0af7e0 1-124
+scripts/resolvers/testing.ts
+  0f62edda9e0af7e0 341-354,357-358
+scripts/resolvers/preamble/generate-telemetry-prompt.ts
+  0f62edda9e0af7e0 1-37
+bin/gstack-telemetry-log
+  0f62edda9e0af7e0 39-44,58-63,203-227,231-233
+model-overlays/o-series.md
+  0f62edda9e0af7e0 1-11
+test/skill-e2e-autoplan-dual-voice.test.ts
+  0f62edda9e0af7e0 73-74,76-82,88-110,115-118,121-124
+scripts/resolvers/constants.ts
+  0f62edda9e0af7e0 3-10,22
+scripts/resolvers/preamble/generate-brain-health-instruction.ts
+  0f62edda9e0af7e0 1-9
+test/helpers/benchmark-judge.ts
+  0f62edda9e0af7e0 1-101
+browse/src/security-bunnative.ts
+  0f62edda9e0af7e0 1-235
+make-pdf/src/render.ts
+  0f62edda9e0af7e0 1-375
+test/helpers/providers/claude.ts
+  0f62edda9e0af7e0 1-116
+browse/test/security-review-flow.test.ts
+  0f62edda9e0af7e0 1-194
+test/migration-checkpoint-ownership.test.ts
+  0f62edda9e0af7e0 1-147
+extension/sidepanel.html
+  0f62edda9e0af7e0 8-17,27-55
+test/skill-e2e-office-hours.test.ts
+  0f62edda9e0af7e0 1-173
+README.md
+  0f62edda9e0af7e0 235-247,278
+browse/test/security-sidepanel-dom.test.ts
+  0f62edda9e0af7e0 1-360
+scripts/resolvers/preamble/generate-writing-style-migration.ts
+  0f62edda9e0af7e0 1-26
+test/audit-compliance.test.ts
+  0f62edda9e0af7e0 36-45
+test/benchmark-runner.test.ts
+  0f62edda9e0af7e0 1-137
+test/helpers/pricing.ts
+  0f62edda9e0af7e0 1-61
+setup
+  0f62edda9e0af7e0 141,254
+browse/test/security-bunnative.test.ts
+  0f62edda9e0af7e0 1-123
+browse/test/security-adversarial.test.ts
+  0f62edda9e0af7e0 1-266
+browse/test/security-review-sidepanel-e2e.test.ts
+  0f62edda9e0af7e0 1-345
+supabase/migrations/004_attack_telemetry.sql
+  0f62edda9e0af7e0 1-44
+.github/workflows/make-pdf-gate.yml
+  0f62edda9e0af7e0 1-80
+test/helpers/providers/types.ts
+  0f62edda9e0af7e0 1-74
+test/helpers/llm-judge.ts
+  0f62edda9e0af7e0 28-35,139-191
+scripts/resolvers/preamble/generate-preamble-bash.ts
+  0f62edda9e0af7e0 1-117
+scripts/resolvers/preamble/generate-continuous-checkpoint.ts
+  0f62edda9e0af7e0 1-48
+scripts/resolvers/preamble/generate-confusion-protocol.ts
+  0f62edda9e0af7e0 1-14
+test/skill-collision-sentinel.test.ts
+  0f62edda9e0af7e0 1-228
+gstack-upgrade/migrations/v1.1.3.0.sh
+  0f62edda9e0af7e0 1-137
+scripts/resolvers/preamble/generate-context-health.ts
+  0f62edda9e0af7e0 1-31
+scripts/resolvers/preamble/generate-proactive-prompt.ts
+  0f62edda9e0af7e0 1-25
+scripts/resolvers/index.ts
+  0f62edda9e0af7e0 12,21,24,70-72,78
+browse/test/security-live-playwright.test.ts
+  0f62edda9e0af7e0 1-166
+test/fixtures/mode-posture/forcing-pitch.md
+  0f62edda9e0af7e0 1-13
+extension/sidepanel.css
+  0f62edda9e0af7e0 50-82,123-317
+make-pdf/src/smartypants.ts
+  0f62edda9e0af7e0 1-100
+bin/gstack-model-benchmark
+  0f62edda9e0af7e0 1-168
+extension/sidepanel.js
+  0f62edda9e0af7e0 110-311,433-437,637-642,1028-1034,1783-1784
+browse/src/security.ts
+  0f62edda9e0af7e0 1-533
+scripts/resolvers/preamble/generate-writing-style.ts
+  0f62edda9e0af7e0 1-44
+test/benchmark-cli.test.ts
+  0f62edda9e0af7e0 1-177
+test/context-save-hardening.test.ts
+  0f62edda9e0af7e0 1-349
+test/fixtures/mode-posture/builder-idea.md
+  0f62edda9e0af7e0 1-15
+browse/test/security-source-contracts.test.ts
+  0f62edda9e0af7e0 1-135
+scripts/resolvers/preamble/generate-upgrade-check.ts
+  0f62edda9e0af7e0 1-48
+make-pdf/test/render.test.ts
+  0f62edda9e0af7e0 1-449
+scripts/resolvers/preamble/generate-ask-user-format.ts
+  0f62edda9e0af7e0 1-16
+make-pdf/src/setup.ts
+  0f62edda9e0af7e0 1-110
+browse/test/security-classifier.test.ts
+  0f62edda9e0af7e0 1-91
+scripts/models.ts
+  0f62edda9e0af7e0 1-68
+model-overlays/claude.md
+  0f62edda9e0af7e0 1-10
+docs/skills.md
+  0f62edda9e0af7e0 966-967
+scripts/resolvers/preamble/generate-routing-injection.ts
+  0f62edda9e0af7e0 1-49
+make-pdf/src/commands.ts
+  0f62edda9e0af7e0 1-62
+scripts/resolvers/preamble/generate-completion-status.ts
+  0f62edda9e0af7e0 1-110
+scripts/resolvers/preamble/generate-search-before-building.ts
+  0f62edda9e0af7e0 1-14
+scripts/resolvers/types.ts
+  0f62edda9e0af7e0 16,34,44,53-55,63
+make-pdf/test/e2e/combined-gate.test.ts
+  0f62edda9e0af7e0 1-76
+test/skill-validation.test.ts
+  0f62edda9e0af7e0 632-636,1075-1077,1127,1129-1131,1141-1143
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "4451641aca6febc58543c0b8c074edc5c1bbb9f9",
+  "prompts": {
+    "0f62edda9e0af7e0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3a963ef2-c634-4d11-bbce-5daa88ae0ff8",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 44690,
+      "total_deletions": 6998,
+      "accepted_lines": 42335,
+      "overriden_lines": 0
+    },
+    "995645d864cb42dd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "93f3454d-ab88-4d15-a991-b33347249d50",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": null,
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 16,
+      "overriden_lines": 0
+    },
+    "f86cec62498d6ed6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b383ca9e-ff2c-4245-89bf-758befdd3cec",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 41156,
+      "overriden_lines": 0
+    }
+  }
+}
