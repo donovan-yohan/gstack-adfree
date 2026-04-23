@@ -33,7 +33,7 @@ export function generateQuestionTuning(ctx: TemplateContext): string {
 
 **After the user answers.** Log it (non-fatal — best-effort):
 \`\`\`bash
-${bin}/gstack-question-log '{"skill":"${ctx.skillName}","question_id":"<id>","question_summary":"<short>","category":"<approval|clarification|routing|cherry-pick|feedback-loop>","door_type":"<one-way|two-way>","options_count":N,"user_choice":"<key>","recommended":"<key>","session_id":"'"$_SESSION_ID"'"}' 2>/dev/null || true
+${bin}/gstack-question-log '{"skill":"${ctx.skillName}","question_id":"<id>","question_summary":"<short>","category":"<approval|clarification|routing|cherry-pick|feedback-loop>","door_type":"<one-way|two-way>","options_count":N,"user_choice":"<key>","recommended":"<key>"}' 2>/dev/null || true
 \`\`\`
 
 **Offer inline tune (two-way only, skip on one-way).** Add one line:
@@ -72,7 +72,7 @@ export function generateQuestionLog(ctx: TemplateContext): string {
 
 After each AskUserQuestion:
 \`\`\`bash
-${bin}/gstack-question-log '{"skill":"${ctx.skillName}","question_id":"<id>","question_summary":"<short>","category":"<cat>","door_type":"<one|two>-way","options_count":N,"user_choice":"<key>","recommended":"<key>","session_id":"'"$_SESSION_ID"'"}' 2>/dev/null || true
+${bin}/gstack-question-log '{"skill":"${ctx.skillName}","question_id":"<id>","question_summary":"<short>","category":"<cat>","door_type":"<one|two>-way","options_count":N,"user_choice":"<key>","recommended":"<key>"}' 2>/dev/null || true
 \`\`\``;
 }
 
