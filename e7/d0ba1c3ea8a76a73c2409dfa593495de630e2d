@@ -1,0 +1,25 @@
+CLAUDE.md
+  3bade027bf9a8c23 22-32,34
+.claude/commands/upstream-sync.md
+  3bade027bf9a8c23 36,44,53-54,63-91,102,108,112
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "e7d0ba1c3ea8a76a73c2409dfa593495de630e2d",
+  "prompts": {
+    "3bade027bf9a8c23": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1dd7372b-3820-4951-951e-0bc779c5fdfe",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 56388,
+      "total_deletions": 7,
+      "accepted_lines": 56388,
+      "overriden_lines": 0
+    }
+  }
+}
