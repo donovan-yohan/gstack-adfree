@@ -370,7 +370,7 @@ I open sourced how I build software. You can fork it and make it your own.
 
 ## GBrain — persistent knowledge for your coding agent
 
-[GBrain](https://github.com/garrytan/gbrain) is a persistent knowledge base for AI agents — think of it as the memory your agent actually keeps between sessions. GStack gives you a one-command path from zero to "it's running, my agent can call it."
+[GBrain](https://github.com/donovan-yohan/kbrain) is a persistent knowledge base for AI agents — think of it as the memory your agent actually keeps between sessions. GStack gives you a one-command path from zero to "it's running, my agent can call it."
 
 ```bash
 /setup-gbrain

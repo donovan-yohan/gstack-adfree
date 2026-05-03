@@ -604,7 +604,7 @@ PLAN MODE EXCEPTION — always allowed (it's the plan file).
 
 # /setup-gbrain — Coding-Agent Onboarding for gbrain
 
-You are setting up gbrain (https://github.com/garrytan/gbrain), a persistent
+You are setting up gbrain (https://github.com/donovan-yohan/kbrain), a persistent
 knowledge base, on the user's local Mac so that this coding agent (typically
 Claude Code) can call it as both a CLI and an MCP tool.
 
