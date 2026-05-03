@@ -19,7 +19,19 @@ git merge upstream/main --no-edit
 - **URL-only files** (README, bin/gstack-update-check, gstack-upgrade/SKILL.md.tmpl):
   keep our `donovan-yohan/gstack-adfree` URLs — upstream won't change theirs, so
   these should merge cleanly.
+- **gbrain federation refs:** keep `donovan-yohan/kbrain` everywhere. After every
+  merge (even clean merges with no conflicts), audit with:
+  ```bash
+  grep -rEn "https?://github\.com/garrytan/gbrain" \
+    --include="*.md" --include="*.ts" --include="*.tmpl" --include="*.json" --include="*.sh" \
+    . 2>/dev/null | grep -v node_modules | grep -v "\.gbrain/"
+  ```
+  Any output = a ref needs re-pinning to `donovan-yohan/kbrain`. Canonical pin
+  sites: `bin/gstack-gbrain-install` (`GBRAIN_REPO_URL=`), `setup-gbrain/SKILL.md.tmpl`,
+  `README.md`, `USING_GBRAIN_WITH_GSTACK.md`, `test/gbrain-detect-install.test.ts`.
+  `PINNED_COMMIT` in the install script is independent — bump only when kbrain diverges.
 - After resolving, always run `bun run gen:skill-docs` and `bun test test/skill-validation.test.ts`.
+  When any gbrain pin was touched, also run `bun test test/gbrain-detect-install.test.ts`.
 
 ## Commands
 
