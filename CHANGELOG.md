@@ -1,5 +1,143 @@
 # Changelog
 
+## [1.26.4.0] - 2026-05-05
+
+## **`/autoplan` review reports now reliably land at the bottom of the plan, even when an older copy lives mid-file.**
+
+The `## GSTACK REVIEW REPORT` section had a write rule that contradicted itself: one bullet said "replace it entirely (in place)" while another said "always last section, move if mid-file." When the agent inherited a plan whose prior `/autoplan` run had landed before user-added sections, the in-place replace path won and the new report stayed mid-file. The user opened ExitPlanMode, saw their plan with no review at the bottom, and had to ask twice. Single delete-then-append rule now, with a Read-tool verification step before the next instruction runs.
+
+### What you can now do
+
+- **Run `/autoplan` against a plan that already has a stale `## GSTACK REVIEW REPORT` mid-file and trust the new report ends up at the bottom.** The instruction in `scripts/resolvers/review.ts` (which feeds `/plan-ceo-review`, `/plan-eng-review`, `/plan-design-review`, `/plan-devex-review`, `/codex`, `/devex-review`) now reads as one rule: search for any existing report section, delete it wherever it lives, append a fresh report at end of file, verify with the Read tool that the report is the last `##` heading. No more contradiction for the agent to reconcile.
+
+### What gets safer
+
+- **Five static template assertions in `test/gen-skill-docs.test.ts` lock the prompt change against drift.** Each plan-review SKILL.md (4 of them) plus the source resolver are checked for the new "delete-then-append flow" / "never mid-file" / "Do NOT replace the section in place" markers AND the absence of the old "replace it** entirely using the Edit tool" / "If it was found mid-file, move it" bullets. Synthetic regression check confirmed: all 5 fail when the prompt is reverted, all 5 pass when restored. The tests are bound to the change, not to incidentally green output.
+
+### Itemized changes
+
+#### Changed
+- `scripts/resolvers/review.ts` — "Write to the plan file" subsection rewritten. Old contradictory pair ("replace it entirely" vs "always last / move if mid-file") collapsed into a single 4-step delete-then-append flow with explicit verification.
+- All 6 generated SKILL.md files refreshed to carry the new instruction: `plan-ceo-review`, `plan-design-review`, `plan-devex-review`, `plan-eng-review`, `codex`, `devex-review`.
+
+#### Added
+- `test/gen-skill-docs.test.ts` — new `GSTACK REVIEW REPORT delete-then-append flow` describe block: 4 SKILL.md target tests + 1 source resolver test. Static, deterministic, free.
+
+#### For contributors
+- The `/autoplan` E2E approach attempted in the plan was dropped after a paid run revealed that `--disallowedTools AskUserQuestion` makes autoplan bail at the Phase 1 premise gate via the plan-file fallback. The PTY harness can't drive autoplan through its review phases without auto-progression of AskUserQuestions. The static prompt-text test catches the load-bearing change without needing that infrastructure.
+
+## [1.26.3.0] - 2026-05-03
+
+## **`/sync-gbrain` keeps your brain current and teaches the agent when to use it.**
+
+Two functional gaps closed in one ship: the cwd repo wasn't actually being indexed by gbrain (the orchestrator called `gbrain import` which only handles markdown directories, not code), and the coding agent had no idea gbrain existed in any session that didn't explicitly opt in. Both fixed by switching to gbrain v0.20.0+'s native code surfaces and adding a CLAUDE.md guidance block that's gated on a working capability check.
+
+### What you can now do
+
+- **Run `/sync-gbrain` to refresh gbrain against this repo's code.** Default is `--incremental` (mtime fast-path, ~50ms). `--full` runs `gbrain reindex-code` for a full re-index. `--dry-run` previews what would sync without writing anywhere. `--code-only`, `--no-memory`, `--no-brain-sync`, `--quiet` all work.
+- **Use `gbrain code-def`/`code-refs`/`code-callers`/`code-callees` against your repo.** /sync-gbrain registers the cwd as a federated source via `gbrain sources add` (idempotent — id is `gstack-code-<repo_slug>`), then runs `gbrain sync --strategy code`. The native code surfaces just work afterward.
+- **Get gbrain hints in every gstack skill preamble.** When gbrain is configured AND the cwd source has page_count > 0, every skill start emits a 4-line "prefer `gbrain search`/`code-def`/`code-refs` over Grep" hint. When configured but the corpus is empty, you get a 3-line emergency hint nudging you to run `/sync-gbrain --full`. When gbrain isn't configured, the hint resolves to empty string — zero context tax for non-gbrain users.
+- **Find the long-form guidance in CLAUDE.md.** `/sync-gbrain` (and `/setup-gbrain` Step 8) write a `## GBrain Search Guidance` block delimited by HTML comments, with concrete CLI commands for semantic search, symbol-aware code lookup, and curated-memory queries. The block is removed automatically when the capability check fails, so a Mac with synced repo CLAUDE.md but no local gbrain doesn't end up telling the agent to use tools that don't exist.
+
+### What gets safer
+
+- **Concurrent /sync-gbrain runs from two terminals don't corrupt CLAUDE.md or `.gbrain-sync-state.json`.** Lock file at `~/.gstack/.sync-gbrain.lock` with PID + timestamp. Stale-lock takeover after 5 min. Both files written via tmp+atomic-rename. SIGINT/SIGTERM trap releases the lock.
+- **`--dry-run` actually doesn't write anywhere.** Previously the orchestrator skipped only the `gbrain import` call; now it skips `sources add`, `sync --strategy code`, the state file, AND the CLAUDE.md guidance block. Print "would: ..." lines for every action.
+- **The capability check is narrower than `gbrain doctor`.** Doctor exits "unhealthy" for unrelated reasons (`resolver_health` warnings, `minions_migration` partial-installs) on otherwise-functional brains. /sync-gbrain uses a write+search round-trip (`gbrain put $SLUG | gbrain search ping | grep $SLUG`) which actually tests what we care about: can the agent search.
+
+### Itemized changes
+
+#### Added
+- New `lib/gbrain-sources.ts` — `ensureSourceRegistered(id, path, options)` + `probeSource(id, env)` + `sourcePageCount(id, env)` helpers. Production callers leave `env` unset (inherit `process.env`); tests pass a custom env to point at a fake `gbrain` on PATH.
+- New `sync-gbrain/SKILL.md.tmpl` — top-level skill, ~250 lines.
+- New `test/gbrain-sources.test.ts` — 9 unit tests with a fake gbrain shell script on PATH (jq-driven state file, no real DB needed).
+- Lock-file primitives (`acquireLock` / `releaseLock`) in the orchestrator.
+- New code-stage detail schema in `.gbrain-sync-state.json`: `last_stages.code.detail = {source_id, source_path, page_count, last_imported, status}`.
+
+#### Changed
+- `bin/gstack-gbrain-sync.ts` `runCodeImport` rewritten to use `gbrain sources add` + `gbrain sync --strategy code` (incremental) or `gbrain reindex-code --yes` (`--full`) instead of `gbrain import`. State file written via tmp+rename for atomicity.
+- `setup-gbrain/SKILL.md.tmpl` Step 8 now writes both `## GBrain Configuration` AND `## GBrain Search Guidance` blocks, gated on Step 9 smoke test pass.
+- `scripts/resolvers/preamble/generate-brain-sync-block.ts` emits Variant A (4 lines, healthy) / Variant B (3 lines, empty corpus) / empty string (gbrain not configured). Reads cached cwd page_count from the state file (handles pretty + compact JSON via `tr -d '\n'` flatten).
+- `test/gen-skill-docs.test.ts` plan-review preamble byte budget bumped 33000 → 35000 to absorb the new context-load block.
+- `test/gstack-gbrain-sync.test.ts` updated for native code surfaces (12 tests, was 8) — adds source-id derivation, dry-run no-lock, stale-lock takeover, fresh-lock blocking.
+- `test/skill-e2e-memory-pipeline.test.ts` updated to assert `would: gbrain sources add` instead of `would: gbrain import`.
+- Ship golden fixtures (`test/fixtures/golden/{claude,codex,factory}-ship-SKILL.md`) refreshed.
+
+#### For contributors
+- The 4-digit `MAJOR.MINOR.PATCH.MICRO` version in `package.json` and `VERSION` is the source of truth.
+- Run `bun run gen:skill-docs --host all` after editing any `.tmpl` to regenerate per-host SKILL.md files; commit both.
+- gbrain v0.25.1 already ships `gbrain sync --watch [--interval N]` and `gbrain sync --install-cron` natively. The previously-deferred V1.5 P0 daemon can wire through to those rather than building a gstack-side watcher.
+
+## [1.26.2.0] - 2026-05-03
+
+## **`/plan-eng-review` always asks. Never silently writes findings to your plan first.**
+
+Plan-mode review skills now have a hard STOP gate before any AskUserQuestion. The bug
+this closes: a `/plan-eng-review` session would do Step 0 scope challenge, find real
+issues, write the findings into the plan file as prose, then call `ExitPlanMode` —
+never invoking AskUserQuestion. The user only saw "ready to execute" with the model's
+opinions already baked in. The tool to surface the question existed, the prompt
+told the model to use it, and the model still routed around it.
+
+Five sites in `plan-eng-review/SKILL.md.tmpl` now use the office-hours `b512be71`
+pattern verbatim: "the AskUserQuestion call is a tool_use, not prose — call the
+tool directly," named blockers ("do not edit the plan file, do not call
+ExitPlanMode"), and an anti-rationalization clause ("loading the schema via
+ToolSearch and writing the recommendation as chat prose is the failure mode this
+gate exists to prevent"). The four review-section gates (Architecture, Code
+Quality, Test, Performance) and the Step 0 complexity-check trigger all use the
+same language.
+
+### What you can now do
+
+- **Trust that any plan-* review skill that produces a plan file ends with the review report.** All four plan-mode E2E tests (`plan-eng`, `plan-ceo`, `plan-design`, `plan-devex`) now assert `## GSTACK REVIEW REPORT` is the last `## ` section of the plan file whenever one was written. The `{{PLAN_FILE_REVIEW_REPORT}}` resolver mandated this contract; nothing tested it until now.
+- **Catch the "writes findings to plan as prose before asking" failure mode.** New `wrote_findings_before_asking` classifier outcome fires when a `Write`/`Edit` to `.claude/plans/*` precedes any AskUserQuestion render in the session window. Opt-in via `strictPlanWrites: true` so existing tests where zero-findings → write plan → plan_ready stays legitimate.
+- **Run `plan-design-review-plan-mode` on PR CI again.** The touchfiles entry was duplicated — `plan-design-review-plan-mode` appeared at line 94 (gate, full deps) and line 243 (smaller deps). JS object literals: later wins. The effective tier was `periodic`, not `gate`. Three of four plan-mode siblings ran on every PR; design didn't.
+
+### Itemized changes
+
+#### Added
+
+- `runPlanSkillObservation`'s `initialPlanContent?: string` option. Pre-pumps a user message containing the seeded plan before invoking the skill, with a 3s gap so the message renders before the slash command.
+- `ClassifyResult` outcome `wrote_findings_before_asking` with companion `strictPlanWrites?` opt on `classifyVisible`. Six new unit tests in `claude-pty-runner.unit.test.ts` cover before/after-AUQ ordering plus the strict-off legacy path.
+- Shared test helper `assertReportAtBottomIfPlanWritten(obs)` in `claude-pty-runner.ts`. Wraps the existing `assertReviewReportAtBottom(content)` and gates on `obs.planFile` (artifact existing), so the assertion fires under `'asked'` and `'plan_ready'` both — wherever a plan file was actually written.
+- New seeded-plan test case in `skill-e2e-plan-eng-plan-mode.test.ts`: `STOP gate fires when seeded plan forces Step 0 findings`. Combines `initialPlanContent` + `--disallowedTools AskUserQuestion` to force the Conductor MCP-variant path through `mcp__*__AskUserQuestion`.
+
+#### Changed
+
+- `plan-eng-review/SKILL.md.tmpl` lines 116, 139, 152, 160, 169 ported from soft "STOP." prose to the office-hours pattern. Adds tool_use reminder, names blocked next steps explicitly, anti-rationalization clause.
+- `runPlanSkillObservation` now captures `obs.planFile` on every classifier outcome (was: only `'plan_ready'`). Catches the case where the skill wrote a plan partway through then paused on a question.
+
+#### Fixed
+
+- `test/helpers/touchfiles.ts` duplicate `plan-design-review-plan-mode` keys deleted (line 243 in `E2E_TOUCHFILES`, line 524 in `E2E_TIERS`). Effective tier is now `gate` again, matching the other three siblings.
+- `scripts/resolvers/review.ts` added to all four plan-mode-test touchfiles entries so changes to the `{{PLAN_FILE_REVIEW_REPORT}}` resolver text trigger all four sibling tests in `bun run eval:select`.
+
+#### For contributors
+
+- 6 new classifier unit tests in `test/helpers/claude-pty-runner.unit.test.ts` (70 → 76).
+- New `initialPlanContent?: string` option on `runPlanSkillObservation` for seeding a draft plan into a test run before invoking the skill. Lets STOP-gate regression tests pre-pump guaranteed-finding-triggering complexity (8+ files, custom-vs-builtin smell) so the skill has something concrete to react to.
+
+## [1.26.1.0] - 2026-05-03
+
+## **`gstack-gbrain-sync` ships host-agnostic. Curated artifacts push from Claude Code, Codex CLI, or a dev workspace — same orchestrator, same install, same result.**
+
+The orchestrator resolves its sibling `gstack-brain-sync` binary via `import.meta.dir`, matching the pattern already in `runMemoryIngest`. Path resolution stays anchored to where the script actually lives, not to a hardcoded host install root, so the curated-git-push stage runs end-to-end on every host gstack supports.
+
+### What you can now do
+
+- **Run `gstack-gbrain-sync` from any host install and watch curated artifacts land in the remote.** End-to-end smoke from a Conductor workspace: `bun run bin/gstack-gbrain-sync.ts --incremental --no-code --no-memory --quiet` returns `{"name": "brain-sync", "ran": true, "ok": true, "summary": "curated artifacts pushed"}`. The stage runs on Codex CLI installs and dev checkouts the same way it runs under Claude Code.
+
+### Changed
+
+- `runBrainSyncPush` (`bin/gstack-gbrain-sync.ts:222`) resolves the curated-push binary as a sibling of the running script. One line, single source of truth: `join(import.meta.dir, "gstack-brain-sync")`.
+
+### For contributors
+
+- New regression test in `test/gstack-gbrain-sync.test.ts` pins sibling-resolution behavior so future refactors can't drift the orchestrator back to a host-coupled path.
+- `plan-review` preamble byte ratchet bumped from 33 KB to 34 KB to honor the gbrain-sync block and AskUserQuestion recommendation pattern that shipped in v1.25.1.0/v1.26.0.0. The test's own comment authorizes this exact kind of intentional-growth ratchet bump.
+- `claude-ship-SKILL.md` and `factory-ship-SKILL.md` golden fixtures regenerated against the live `/ship` template (canonical `Recommendation:` line from v1.25.1.0 now reflected in the goldens).
+
 ## [1.26.0.0] - 2026-05-02
 
 ## **Your coding agent now remembers everything. Every gstack skill auto-loads what you actually did.**
