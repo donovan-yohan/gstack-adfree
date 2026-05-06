@@ -1,19 +1,19 @@
 ---
-name: setup-gbrain
+name: sync-gbrain
 preamble-tier: 2
 version: 1.0.0
 description: |
-  Set up gbrain for this coding agent: install the CLI, initialize a
-  local PGLite or Supabase brain, register MCP, capture per-remote trust
-  policy. One command from zero to "gbrain is running, and this agent
-  can call it." Use when: "setup gbrain", "connect gbrain", "start
-  gbrain", "install gbrain", "configure gbrain for this machine". (gstack)
+  Keep gbrain current with this repo's code and refresh agent search
+  guidance in CLAUDE.md. Wraps the gstack-gbrain-sync orchestrator with
+  state probing, native code-surface registration, capability checks,
+  and a verdict block. Re-runnable, idempotent. Use when: "sync gbrain",
+  "refresh gbrain", "re-index this repo", "gbrain search isn't finding
+  things". (gstack)
 triggers:
-  - setup gbrain
-  - install gbrain
-  - connect gbrain
-  - start gbrain
-  - configure gbrain
+  - sync gbrain
+  - refresh gbrain
+  - reindex repo
+  - update gbrain
 allowed-tools:
   - Bash
   - Read
@@ -591,7 +591,7 @@ Before each AskUserQuestion, choose `question_id` from `scripts/question-registr
 
 After answer, log best-effort:
 ```bash
-~/.claude/skills/gstack/bin/gstack-question-log '{"skill":"setup-gbrain","question_id":"<id>","question_summary":"<short>","category":"<approval|clarification|routing|cherry-pick|feedback-loop>","door_type":"<one-way|two-way>","options_count":N,"user_choice":"<key>","recommended":"<key>"}' 2>/dev/null || true
+~/.claude/skills/gstack/bin/gstack-question-log '{"skill":"sync-gbrain","question_id":"<id>","question_summary":"<short>","category":"<approval|clarification|routing|cherry-pick|feedback-loop>","door_type":"<one-way|two-way>","options_count":N,"user_choice":"<key>","recommended":"<key>"}' 2>/dev/null || true
 ```
 
 For two-way questions, offer: "Tune this question? Reply `tune: never-ask`, `tune: always-ask`, or free-form."
@@ -631,472 +631,142 @@ In plan mode before ExitPlanMode: if the plan file lacks `## GSTACK REVIEW REPOR
 
 PLAN MODE EXCEPTION — always allowed (it's the plan file).
 
-# /setup-gbrain — Coding-Agent Onboarding for gbrain
+# /sync-gbrain — Keep gbrain current and teach the agent to use it
 
-You are setting up gbrain (https://github.com/donovan-yohan/kbrain), a persistent
-knowledge base, on the user's local Mac so that this coding agent (typically
-Claude Code) can call it as both a CLI and an MCP tool.
+You are running the canonical "keep this brain up to date" verb. /setup-gbrain
+installs gbrain once; /sync-gbrain runs every time the user wants the brain
+refreshed against this repo's current state, and refreshes the agent-side
+guidance in CLAUDE.md so the coding agent knows when to prefer `gbrain`
+search over Grep.
 
-**Scope honesty:** This skill's MCP registration step (5a) uses
-`claude mcp add` and targets Claude Code specifically. Other local hosts
-(Cursor, Codex CLI, etc.) will still get the gbrain CLI on PATH — they can
-register `gbrain serve` in their own MCP config manually after setup.
-
-**Audience:** local-Mac users. openclaw/hermes agents typically run in cloud
-docker containers with their own gbrain; "sharing" a brain between them and
-local Claude Code is only possible through shared Postgres (Supabase).
+**Architecture (post-codex review):** This skill uses gbrain v0.20.0+'s
+**native code surfaces** (`gbrain sources add`, `gbrain sync --strategy code`,
+`gbrain reindex-code`, `gbrain code-def/code-refs/code-callers/code-callees`).
+It does NOT use `gbrain import` (that path is for markdown directories).
+It does NOT touch `~/.gstack/` indexing (the existing `gstack-gbrain-source-wireup`
+owns that — never double-store).
 
 ## User-invocable
-When the user types `/setup-gbrain`, run this skill. Three shortcut modes:
 
-- `/setup-gbrain` — full flow (default)
-- `/setup-gbrain --repo` — only flip the per-remote policy for the current repo
-- `/setup-gbrain --switch` — only migrate the engine (PGLite ↔ Supabase)
-- `/setup-gbrain --resume-provision <ref>` — re-enter a previously interrupted
-  Supabase auto-provision at the polling step
-- `/setup-gbrain --cleanup-orphans` — list + delete in-flight Supabase projects
+When the user types `/sync-gbrain`, run this skill. Argument modes (parsed by
+the skill itself, not a dispatcher binary):
 
-Parse the invocation args yourself — these are prose hints to the skill, not
-implemented as a dispatcher binary.
+- `/sync-gbrain` — incremental sync (default; mtime fast-path; ~50ms steady-state)
+- `/sync-gbrain --full` — full code reindex via `gbrain reindex-code` (~25-35 min on a big repo)
+- `/sync-gbrain --code-only` — only run the code stage; skip memory + brain-sync
+- `/sync-gbrain --dry-run` — preview what would sync; no writes anywhere
+- `/sync-gbrain --no-memory` / `--no-brain-sync` — selectively skip stages
+- `/sync-gbrain --quiet` — suppress per-stage output
 
----
-
-## Step 1: Detect current state
-
-```bash
-~/.claude/skills/gstack/bin/gstack-gbrain-detect
-```
-
-Capture the JSON output. It contains: `gbrain_on_path`, `gbrain_version`,
-`gbrain_config_exists`, `gbrain_engine`, `gbrain_doctor_ok`,
-`gstack_brain_sync_mode`, `gstack_brain_git`.
-
-Skip downstream steps that are already done. Report the detected state in
-one line so the user knows what you found:
-
-> "Detected: gbrain v0.18.2 on PATH, engine=postgres, doctor=ok,
->  sync=artifacts-only. Nothing to install; jumping to the policy check."
-
-Branch on the `--repo`, `--switch`, `--resume-provision`, `--cleanup-orphans`
-invocation flags here and skip to the matching step.
+Pass-through args go straight to the orchestrator at
+`~/.claude/skills/gstack/bin/gstack-gbrain-sync.ts`.
 
 ---
 
-## Step 2: Pick a path (AskUserQuestion)
+## Step 1: State probe
 
-Only fire this if Step 1 shows no existing working config AND no shortcut
-flag was passed. The question title: "Where should your brain live?"
+Before doing anything, check that /setup-gbrain has been run on this Mac.
 
-Options (present based on detected state):
+```bash
+~/.claude/skills/gstack/bin/gstack-gbrain-detect 2>/dev/null
+```
 
-- **1 — Supabase, I already have a connection string.** Cloud-agent users
-  whose openclaw/hermes provisioned one already. Paste the Session Pooler
-  URL from the Supabase dashboard (Settings → Database → Connection Pooler
-  → Session). *Trust-surface caveat to include in the prompt:* "Pasting this
-  URL gives your local Claude Code full read/write access to every page your
-  cloud agent can see. If that's not the trust level you want, pick PGLite
-  local instead and accept the brains are disjoint."
-- **2a — Supabase, auto-provision a new project.** You'll need a Supabase
-  Personal Access Token (~90 seconds). Best choice for a shared team brain.
-- **2b — Supabase, create manually.** Walk through supabase.com signup
-  yourself; paste the URL back when ready.
-- **3 — PGLite local.** Zero accounts, ~30 seconds. Isolated brain on this
-  Mac only. Best for try-first.
-- **Switch** (only if Step 1 detected an existing engine): "You already have
-  a `<engine>` brain. Migrate it to the other engine?" → runs
-  `gbrain migrate --to <other>` wrapped in `timeout 180s` (D9).
+If `gbrain_on_path=false` OR `gbrain_config_exists=false` OR CLAUDE.md does
+not contain `## GBrain Configuration (configured by /setup-gbrain)`, STOP and
+tell the user:
 
-Do NOT silently pick; fire the AskUserQuestion.
+> "/sync-gbrain requires /setup-gbrain to be run first. Run `/setup-gbrain` to
+> install gbrain, register the MCP server, and set per-repo trust policy."
+
+Do NOT continue — the skill is unsafe when gbrain isn't configured (we'd
+write a CLAUDE.md guidance block referencing tools that don't exist).
+
+Also check the per-repo trust policy. If `gstack-gbrain-repo-policy get` for
+this repo returns `deny`, STOP:
+
+> "This repo's gbrain trust policy is `deny`. Run `/setup-gbrain --repo` to
+> change it before syncing."
 
 ---
 
-## Step 3: Install gbrain CLI (if missing)
+## Step 2: Run the orchestrator
 
-Only if `gbrain_on_path=false`:
+Pass user args to the orchestrator. Do not paraphrase them — pass through
+as-is.
 
 ```bash
-~/.claude/skills/gstack/bin/gstack-gbrain-install
+bun run ~/.claude/skills/gstack/bin/gstack-gbrain-sync.ts <user-args>
 ```
 
-The installer runs D5 detect-first (probes `~/git/gbrain`, `~/gbrain` first),
-then D19 PATH-shadow validation (post-link `gbrain --version` must match
-install-dir `package.json`). On D19 failure the installer exits 3 with a
-clear remediation menu; surface the full output to the user and STOP. Do not
-continue the skill — the environment is broken until the user fixes PATH.
+The orchestrator runs three stages: code → memory → brain-sync (per the
+plan's storage tiering). Each stage failure is non-fatal; subsequent stages
+still run. State is persisted to `~/.gstack/.gbrain-sync-state.json` via
+tmp-file + atomic rename. Concurrent runs are blocked by a lock file at
+`~/.gstack/.sync-gbrain.lock` (5-min stale-takeover).
 
 ---
 
-## Step 4: Initialize the brain
+## Step 3: Code-index health check
 
-Path-specific.
-
-### Path 1 (Supabase, existing URL)
-
-Source the secret-read helper, collect URL with `read -s` + redacted preview:
+After the sync run, query gbrain for the cwd source's page_count:
 
 ```bash
-. ~/.claude/skills/gstack/bin/gstack-gbrain-lib.sh
-read_secret_to_env GBRAIN_POOLER_URL "Paste Session Pooler URL: " \
-  --echo-redacted 's#://[^@]*@#://***@#'
+SOURCE_ID=$(grep -o '"source_id":"[^"]*"' ~/.gstack/.gbrain-sync-state.json 2>/dev/null \
+  | head -1 | sed 's/.*"source_id":"//;s/".*//')
+PAGES=$(gbrain sources list --json 2>/dev/null \
+  | jq -r --arg id "$SOURCE_ID" '.sources[] | select(.id==$id) | .page_count' 2>/dev/null \
+  || echo 0)
+echo "cwd source: $SOURCE_ID, page_count: $PAGES"
 ```
 
-Then validate structurally:
+If `PAGES` is 0 or empty AND the user did NOT pass `--no-code` AND mode was
+not `--full`, AskUserQuestion via the format in the preamble:
 
-```bash
-printf '%s' "$GBRAIN_POOLER_URL" | ~/.claude/skills/gstack/bin/gstack-gbrain-supabase-verify -
-```
-
-If the verify exit code is 3 (direct-connection URL), the verifier's own
-message explains the fix; surface it and re-prompt for a Session Pooler URL.
-
-On success, hand off to gbrain via env var (D10, never argv):
-
-```bash
-GBRAIN_DATABASE_URL="$GBRAIN_POOLER_URL" gbrain init --non-interactive --json
-```
-
-Then `unset GBRAIN_POOLER_URL GBRAIN_DATABASE_URL` immediately. The URL is
-now persisted in `~/.gbrain/config.json` at mode 0600 by gbrain itself.
-
-### Path 2a (Supabase, auto-provision — D7)
-
-Show the D11 PAT scope disclosure verbatim BEFORE collecting the token:
-
-> *This Supabase Personal Access Token grants full read/write/delete access
-> to every project in your Supabase account, not just the `gbrain` one we're
-> about to create. Supabase doesn't currently support scoped tokens. We use
-> this PAT only to: create one project, poll it until healthy, read the
-> Session Pooler URL — then discard it from process memory. The token
-> remains valid on Supabase's side until you manually revoke it at
-> https://supabase.com/dashboard/account/tokens — we recommend revoking
-> immediately after setup completes.*
-
-Then:
-
-```bash
-. ~/.claude/skills/gstack/bin/gstack-gbrain-lib.sh
-read_secret_to_env SUPABASE_ACCESS_TOKEN "Paste PAT: "
-```
-
-Ask the D17 tier prompt via AskUserQuestion: "Which Supabase tier?" Present
-Free (2-project limit, pauses after 7d inactivity) vs Pro ($25/mo, no
-pauses, recommended for real use). Explain that tier is **org-level** (per
-the Management API contract) — user picks their org based on its current
-tier. Pro may require them to upgrade the org first at supabase.com.
-
-List orgs, pick one (AskUserQuestion if multiple):
-
-```bash
-orgs=$(~/.claude/skills/gstack/bin/gstack-gbrain-supabase-provision list-orgs --json)
-```
-
-If the `.orgs` array is empty, surface: "Your Supabase account has no
-organizations. Create one at https://supabase.com/dashboard, then re-run
-`/setup-gbrain`." STOP.
-
-Ask the user for a region (default `us-east-1`; valid values are the 18
-enum values in the Supabase Management API — list a few common ones, let
-them pick "Other" for a full list).
-
-Generate the DB password (never shown to the user):
-
-```bash
-export DB_PASS=$(openssl rand -base64 24)
-```
-
-Set up a SIGINT trap (D12 basic recovery):
-
-```bash
-trap 'echo ""; echo "gstack-gbrain: interrupted. In-flight ref: $INFLIGHT_REF"; \
-      echo "Resume: /setup-gbrain --resume-provision $INFLIGHT_REF"; \
-      echo "Delete: https://supabase.com/dashboard/project/$INFLIGHT_REF"; \
-      unset SUPABASE_ACCESS_TOKEN DB_PASS; exit 130' INT TERM
-```
-
-Create + wait + fetch:
-
-```bash
-result=$(~/.claude/skills/gstack/bin/gstack-gbrain-supabase-provision \
-  create gbrain "$REGION" "$ORG_SLUG" --json)
-INFLIGHT_REF=$(echo "$result" | jq -r .ref)
-~/.claude/skills/gstack/bin/gstack-gbrain-supabase-provision wait "$INFLIGHT_REF" --json
-pooler=$(~/.claude/skills/gstack/bin/gstack-gbrain-supabase-provision \
-  pooler-url "$INFLIGHT_REF" --json)
-GBRAIN_DATABASE_URL=$(echo "$pooler" | jq -r .pooler_url)
-export GBRAIN_DATABASE_URL
-gbrain init --non-interactive --json
-unset SUPABASE_ACCESS_TOKEN DB_PASS GBRAIN_DATABASE_URL INFLIGHT_REF
-trap - INT TERM
-```
-
-After success, emit the PAT revocation reminder:
-
-> "Setup complete. Revoke the PAT you pasted at
-> https://supabase.com/dashboard/account/tokens — we've already discarded
-> it from memory and don't need it again. The gbrain project will continue
-> working because it uses its own embedded database password."
-
-### Path 2b (Supabase, manual)
-
-Walk the user through the supabase.com steps:
-1. Login at https://supabase.com/dashboard
-2. Click "New Project," name it `gbrain`, pick a region, copy the generated
-   database password (you'll need it for paste-back? no — it's embedded in
-   the pooler URL we collect next)
-3. Wait ~2 min for the project to initialize
-4. Settings → Database → Connection Pooler → Session → copy the URL (port
-   6543)
-
-Then follow the same secret-read + verify + init flow as Path 1.
-
-### Path 3 (PGLite local)
-
-```bash
-gbrain init --pglite --json
-```
-
-Done. No network, no secrets.
-
-### Switch (from detect's existing-engine state)
-
-```bash
-# Going PGLite → Supabase, collect URL first (Path 1 flow), then:
-timeout 180s gbrain migrate --to supabase --url "$URL" --json
-# Going Supabase → PGLite:
-timeout 180s gbrain migrate --to pglite --json
-```
-
-If `timeout` returns 124 (exit code for timeout): surface D9 message
-("Migration didn't complete in 3 minutes — another gstack session may be
-holding a lock on the source brain. Close other workspaces and re-run
-`/setup-gbrain --switch`. Your original brain is untouched."). STOP.
-
----
-
-## Step 5: Verify gbrain doctor
-
-```bash
-doctor=$(gbrain doctor --json)
-status=$(echo "$doctor" | jq -r .status)
-```
-
-If status is `ok` or `warnings`, proceed. Anything else → surface the full
-doctor output and STOP.
-
----
-
-## Step 5a: Register gbrain as Claude Code MCP (D18)
-
-Only if `which claude` resolves. Ask: "Give Claude Code a typed tool surface
-for gbrain? (recommended yes)"
-
-If yes, register at **user scope** with an **absolute path** to the gbrain
-binary. User scope makes the MCP available in every Claude Code session on
-this machine, not just the current workspace. Absolute path avoids PATH
-resolution issues when Claude Code spawns `gbrain serve` as a subprocess.
-
-```bash
-GBRAIN_BIN=$(command -v gbrain)
-[ -z "$GBRAIN_BIN" ] && GBRAIN_BIN="$HOME/.bun/bin/gbrain"
-claude mcp add --scope user gbrain -- "$GBRAIN_BIN" serve
-claude mcp list | grep gbrain  # verify: should show "✓ Connected"
-```
-
-If the user already had a local-scope registration from an earlier run,
-remove it first so both scopes don't conflict:
-```bash
-claude mcp remove gbrain 2>/dev/null || true
-```
-
-If `claude` is not on PATH: emit "MCP registration skipped — this skill is
-Claude-Code-targeted; register `gbrain serve` in your agent's MCP config
-manually." Continue to step 6.
-
-**Heads-up for the user:** an already-open Claude Code session will not
-pick up the new MCP tools until restart. Tell them: "Restart any open
-Claude Code sessions to see `mcp__gbrain__*` tools — they're loaded at
-session start, not mid-session."
-
----
-
-## Step 6: Per-remote policy (D3 triad, gated repo-import)
-
-If we're in a git repo with an `origin` remote, check the policy:
-
-```bash
-current_tier=$(~/.claude/skills/gstack/bin/gstack-gbrain-repo-policy get)
-```
-
-Branches:
-- `read-write` → import this repo: `gbrain import "$(pwd)" --no-embed` then
-  `gbrain embed --stale &` in the background.
-- `read-only` → skip import entirely (this tier is enforced by the future
-  auto-import hook + by gbrain resolver injection, not here).
-- `deny` → do nothing.
-- `unset` → AskUserQuestion: "How should `<normalized-remote>` interact with
-  gbrain?"
-  - `read-write` — agent can search AND write new pages from this repo
-  - `read-only` — agent can search but never write
-  - `deny` — no interaction at all
-  - `skip-for-now` — don't persist, ask next time
-
-  On answer (other than skip-for-now):
-  ```bash
-  ~/.claude/skills/gstack/bin/gstack-gbrain-repo-policy set "$REMOTE" "$TIER"
-  ```
-  Then import iff `read-write`.
-
-If outside a git repo OR no origin remote: skip this step with a note.
-
-For `/setup-gbrain --repo` invocations, execute ONLY Step 6 and exit.
-
----
-
-## Step 7: Offer gstack-brain-sync + wire it into gbrain
-
-Separate AskUserQuestion: "Also sync your gstack session memory (learnings,
-plans, retros) to a private git repo that gbrain can index across machines?"
-
-Options:
-- Yes, full sync (everything allowlisted)
-- Yes, artifacts-only (plans, designs, retros — skip behavioral data)
-- No thanks
-
-If yes:
-
-```bash
-~/.claude/skills/gstack/bin/gstack-brain-init
-~/.claude/skills/gstack/bin/gstack-config set gbrain_sync_mode artifacts-only
-# or "full" if user picked yes-full
-```
-
-Then wire the brain repo into gbrain so its content is searchable from any
-gbrain client (this Claude Code session, future Macs, optional cloud agents).
-The helper creates a `git worktree` of `~/.gstack/`, registers it as a
-federated source on the user's gbrain (Supabase or PGLite), and runs an
-initial `gbrain sync`. Local-Mac only. No cloud agent required. Subsequent
-skill runs trigger incremental sync via the existing skill-end push hook.
-
-Capture the database URL out of `~/.gbrain/config.json` first and pass it
-explicitly so the wireup is robust against any other process rewriting
-`~/.gbrain/config.json` mid-sync (e.g., concurrent `gbrain init` runs
-elsewhere on the machine):
-
-```bash
-GBRAIN_URL=$(python3 -c "
-import json, os, sys
-try:
-    c = json.load(open(os.path.expanduser('~/.gbrain/config.json')))
-    print(c.get('database_url', ''))
-except Exception:
-    pass
-")
-~/.claude/skills/gstack/bin/gstack-gbrain-source-wireup --strict \
-  ${GBRAIN_URL:+--database-url "$GBRAIN_URL"}
-```
-
-`--strict` exits non-zero on missing prereqs (gbrain not installed, < 0.18.0,
-or no `~/.gstack/.git` yet) so the user sees the failure rather than silently
-ending up with an unwired brain. On non-zero exit, surface the helper's
-output and STOP per skill rules — search-across-machines won't work until
-the prereq is fixed.
-
----
-
-## Step 7.5: Transcript & memory ingest gate
-
-After memory sync is wired (Step 7) but before persisting the CLAUDE.md
-config (Step 8), offer to bring this Mac's coding-agent transcripts +
-curated `~/.gstack/` artifacts into gbrain so the retrieval surface
-(per-skill manifests, salience block) has data to surface.
-
-Run the probe to size the operation:
-```bash
-~/.claude/skills/gstack/bin/gstack-memory-ingest --probe
-```
-
-Read the output. If `Total files in window: 0`, skip — there's nothing
-to ingest. Set `gstack-config set transcript_ingest_mode incremental`
-silently and continue to Step 8.
-
-If `New (never ingested)` is < 200 AND total bytes are < 100MB: silent
-bulk via `gstack-memory-ingest --bulk --quiet`. Set
-`transcript_ingest_mode=incremental` and continue.
-
-Otherwise (the "many transcripts on disk" path): AskUserQuestion with
-the exact counts AND the value promise. Default scope is **current repo
-only, last 90 days**:
-
-> "Found <N_repo> transcripts in THIS repo (<repo-slug>) over the last
-> 90 days, plus <N_other> across other repos on this machine (<bytes>
-> total if all ingested). Ingest THIS repo's transcripts into gbrain?
+> D1 — This repo has 0 indexed pages in gbrain. Run a full code reindex now?
 >
-> What you get after this: every gstack skill auto-loads recent salience
-> from your past sessions in this repo, so the agent finds your prior
-> work without you describing it. You can query 'what was I doing on
-> day X' and get a real answer. Per-session pages are searchable,
-> taggable, and deletable. Secret scanning runs before any push.
+> ELI10: gbrain hasn't indexed this repo's code yet. The semantic search
+> tools (`gbrain search`, `code-def`, `code-refs`) will return nothing
+> until we run a full pass. Takes ~25-35 minutes on a big Mac.
 >
-> What stays the same: nothing leaves your machine unless gbrain sync
-> is enabled (Step 7). Per-repo trust policies still apply.
+> Recommendation: A — the brain is unusable for code search until indexed,
+> and Step 2 of this skill already verified gbrain is configured correctly.
 >
-> Multi-Mac note: if you HAVE enabled brain sync (Step 7), these
-> transcript pages will sync across your Macs. Caveat: deleting a
-> transcript page later removes it from gbrain but git history retains
-> it in prior commits. Use `gstack-transcript-prune` to delete in bulk;
-> use `git filter-repo` on the brain remote for hard-delete from
-> history."
+> Note: options differ in kind, not coverage — no completeness score.
+>
+> A) Run /sync-gbrain --full now (recommended)
+> B) Skip — I'll run it later
 
-Options:
-- A) Yes — this repo, last 90 days (recommended; ~est min)
-- B) Yes — this repo, ALL history
-- C) Yes — this repo + other repos on this machine
-- D) Skip historical, track new from now (`transcript_ingest_mode=incremental`)
-- E) Never ingest transcripts (`transcript_ingest_mode=off`)
-
-After answer:
-```bash
-~/.claude/skills/gstack/bin/gstack-config set transcript_ingest_mode <choice>
-~/.claude/skills/gstack/bin/gstack-gbrain-sync --full --no-brain-sync
-```
-(`--no-brain-sync` because Step 7 already wired that path; this just
-runs the code import + memory ingest stages. Brain-sync will run on the
-next preamble hook.)
-
-If A/D/E, ingest is incremental from this point on; preamble-boundary
-hook runs `gstack-gbrain-sync --incremental --quiet` on every skill
-start (cheap mtime fast-path).
-
-Reference doc for users: `setup-gbrain/memory.md` (linked from CLAUDE.md
-Step 8).
+If A: re-invoke the orchestrator with `--full --code-only`.
+If B: continue to Step 4 with the empty-corpus state recorded.
 
 ---
 
-## Step 8: Persist `## GBrain Configuration` in CLAUDE.md
+## Step 4: Refresh `## GBrain Search Guidance` block in CLAUDE.md
 
-Find-and-replace (or append) this section in CLAUDE.md:
+Capability check (per /plan-eng-review §6):
 
-```markdown
-## GBrain Configuration (configured by /setup-gbrain)
-- Engine: {pglite|postgres}
-- Config file: ~/.gbrain/config.json (mode 0600)
-- Setup date: {today}
-- MCP registered: {yes/no}
-- Memory sync: {off|artifacts-only|full}
-- Current repo policy: {read-write|read-only|deny|unset}
+```bash
+SLUG="_capability_check_$$"
+if [ -f ~/.gbrain/config.json ] && \
+   gbrain --version 2>/dev/null | grep -q '^gbrain ' && \
+   echo "ping" | gbrain put "$SLUG" >/dev/null 2>&1 && \
+   gbrain search "ping" 2>/dev/null | grep -q "$SLUG"; then
+  CAPABILITY_OK=1
+else
+  CAPABILITY_OK=0
+fi
+gbrain delete "$SLUG" 2>/dev/null || true
 ```
 
-**After Step 9 (smoke test) passes, also write the `## GBrain Search Guidance`
-block** so the coding agent learns when to prefer `gbrain` over Grep. This
-block is gated on the smoke test passing — write the Configuration block
-first (so the user knows what state they're in even if the smoke test fails),
-then return here after Step 9 and write the guidance block only if smoke
-test succeeded.
+Then update CLAUDE.md based on capability state:
 
-When Step 9 passes, find-and-replace (or append) this block. Use HTML-comment
-delimiters so removal regex is unambiguous and never eats user content. The
-block content is machine-AGNOSTIC — no engine type, no page counts, no
-last-sync time. Machine state stays in the Configuration block above.
+**If `CAPABILITY_OK=1`** — write or update the block. Idempotent: find the
+HTML-comment-delimited block; replace its body if it exists; append at the
+end of CLAUDE.md if it doesn't. NEVER duplicate. Block is machine-AGNOSTIC
+(no engine, no page counts, no last-sync time — those are in the existing
+`## GBrain Configuration` block).
+
+Verbatim block content (copy exactly):
 
 ```markdown
 ## GBrain Search Guidance (configured by /sync-gbrain)
@@ -1126,131 +796,77 @@ Run `/sync-gbrain` to force-refresh, `/sync-gbrain --full` for full reindex.
 <!-- gstack-gbrain-search-guidance:end -->
 ```
 
-If Step 9 smoke test fails, skip the guidance block write entirely. The user's
-next `/sync-gbrain` run will re-evaluate capability and write the block when
-the round-trip works.
+Use the Read + Edit tools. The find-and-replace target is the entire region
+from `<!-- gstack-gbrain-search-guidance:start -->` through
+`<!-- gstack-gbrain-search-guidance:end -->`. If those markers are missing,
+search for `## GBrain Search Guidance (configured by /sync-gbrain)` heading
+and replace from there to the next `## ` or EOF. If no heading exists, append
+the entire block at the end of CLAUDE.md.
+
+**Atomic write:** write the new CLAUDE.md content to a tmp file alongside it
+(e.g., `CLAUDE.md.sync-gbrain.tmp`) then `mv` to atomic-rename, so a crash
+mid-write never leaves the file half-modified.
+
+**If `CAPABILITY_OK=0`** — REMOVE the block entirely if present. Use the same
+Edit tool to strip the start/end-marker region. The `## GBrain Configuration`
+block stays in place (it's a record of the install, not a capability claim).
+
+Do NOT crash if CLAUDE.md is missing or unwritable — log a warning and
+continue.
 
 ---
 
-## Step 9: Smoke test
+## Step 5: Verdict block (idempotent doctor output)
 
-```bash
-SLUG="setup-gbrain-smoke-test-$(date +%s)"
-echo "Set up on $(date). Smoke test for /setup-gbrain." | gbrain put "$SLUG"
-gbrain search "smoke test" | grep -i "$SLUG"
-```
-
-Confirms the round trip. On failure, surface `gbrain doctor --json` output
-and STOP with a NEEDS_CONTEXT escalation.
-
----
-
-## Step 10: GREEN/YELLOW/RED verdict block (idempotent doctor output)
-
-After Steps 1-9 complete, summarize. Re-running `/setup-gbrain` on a
-configured Mac is a first-class doctor path: every step detects existing
-state, repairs only what's missing, and reports here.
-
-```bash
-~/.claude/skills/gstack/bin/gstack-gbrain-detect 2>/dev/null || true
-~/.claude/skills/gstack/bin/gstack-config get transcript_ingest_mode 2>/dev/null || echo "off"
-~/.claude/skills/gstack/bin/gstack-config get gbrain_sync_mode 2>/dev/null || echo "off"
-[ -f ~/.gstack/.gbrain-sync-state.json ] && cat ~/.gstack/.gbrain-sync-state.json || echo "{}"
-```
-
-Print the verdict block. Each row is `[OK]/[FIX]/[WARN]/[ERR]` — see
-template below; substitute your detect outputs:
+Print a status block matching `/setup-gbrain` Step 10 conventions. Each row
+is `[OK]/[FIX]/[WARN]/[ERR]`. Reuse `gbrain doctor --json --fast` for
+informational rows but DO NOT gate the guidance block on doctor (per
+/plan-eng-review §6 — doctor is too strict for unrelated reasons).
 
 ```
 gbrain status: GREEN
 
   CLI ............. OK   <gbrain version>
-  Engine .......... OK   <pglite|supabase> at <path>
-  doctor .......... OK
-  MCP ............. OK   registered (user scope)
-  Repo policy ..... OK   <read-write|read-only|deny>
-  Code import ..... OK   <last_imported_head>
-  Memory sync ..... OK   <gbrain_sync_mode> to <remote>
-  Transcripts ..... OK   <N> sessions, last ingest <when>
-  CLAUDE.md ....... OK
-  Smoke test ...... OK   put → search → delete round-trip
+  Engine .......... OK   <pglite|supabase>
+  Capability ...... OK   write+search round-trip
+  CWD source ...... OK   <gstack-code-{repo_slug}> (page_count=<N>)
+  ~/.gstack source. OK   <gstack-brain-{user}> (page_count=<N>) — managed by /setup-gbrain
+  Memory sync ..... OK   <gbrain_sync_mode>
+  CLAUDE.md ....... OK   ## GBrain Search Guidance present
+  Last sync ....... OK   <last_sync from state file>
 
-Run `/setup-gbrain` again any time gbrain feels off; it's safe and idempotent.
+Run `/sync-gbrain` again any time gbrain feels off; safe and idempotent.
 ```
 
 If any row is YELLOW or RED, the verdict line says so and the failing rows
-surface a one-line "next action" (e.g.,
-`Engine .......... ERR  PGLite corrupt — run \`gbrain restore-from-sync\` (V1.5)`).
-For V1, restore-from-sync is a V1.5 P0 cross-repo TODO; until it ships,
-the user's brain remote (with brain-sync enabled) holds curated artifacts
-as markdown + git, recoverable manually via `gbrain import` from a clone.
+surface a one-line "next action" (e.g., `Capability ...... ERR  capability
+check failed; CLAUDE.md guidance block REMOVED — run /setup-gbrain to repair`).
 
 ---
 
-## `/setup-gbrain --cleanup-orphans` (D20)
+## Concurrency note
 
-Re-collect a PAT (Step 4 path-2a scope disclosure), then:
+This skill is safe to run concurrently from multiple terminals on the same
+Mac. The orchestrator acquires a lock at `~/.gstack/.sync-gbrain.lock` before
+any state-file or CLAUDE.md mutation and exits with code 2 if another sync is
+in flight. Stale locks (process died) auto-clear after 5 minutes.
 
-```bash
-# List user's Supabase projects (user has to pipe this through their own
-# shell to review; we don't rely on a stored PAT).
-export SUPABASE_ACCESS_TOKEN="<collected from read_secret_to_env>"
-projects=$(curl -s -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
-  https://api.supabase.com/v1/projects)
-```
+## Cross-machine note
 
-Parse the response, identify any project named starting with `gbrain` whose
-`ref` doesn't match the user's active `~/.gbrain/config.json` pooler URL.
-For each orphan, AskUserQuestion per project: "Delete orphan project
-`<ref>` (`<name>`, created `<created_at>`)?" — NEVER batch; per-project
-confirm is a one-way door.
+The `## GBrain Search Guidance` block is committed to the repo's CLAUDE.md
+and travels with `git push`/`git pull` — NOT through `~/.gstack/.brain-allowlist`
+(which is for `~/.gstack/` brain-sync only). On a different Mac with a synced
+CLAUDE.md but no local gbrain, /sync-gbrain detects the mismatch via the
+capability check and REMOVES the block (the local agent shouldn't be told to
+use a tool that isn't installed).
 
-On confirmed delete:
-```bash
-curl -s -X DELETE -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
-  https://api.supabase.com/v1/projects/$REF
-```
+## Status reporting
 
-Never delete the active brain without a second explicit confirmation.
-
-At end: `unset SUPABASE_ACCESS_TOKEN`. Revocation reminder.
-
----
-
-## Telemetry (D4)
-
-The preamble's Telemetry block logs skill success/failure at exit. When
-emitting the event, add these enumerated categorical values to the
-telemetry payload (SAFE — no free-form secrets, never the URL or PAT):
-
-- `scenario`: `supabase-existing` | `supabase-auto-provision` |
-  `supabase-manual` | `pglite-local` | `switch-to-supabase` |
-  `switch-to-pglite` | `repo-flip-only` | `cleanup-orphans` |
-  `resume-provision`
-- `install_performed`: `yes` | `no` (D5 reuse) | `skipped` (pre-existing)
-- `mcp_registered`: `yes` | `no` | `claude-missing`
-- `trust_tier_set`: `read-write` | `read-only` | `deny` |
-  `skip-for-now` | `n/a` (outside git repo)
-
-Never pass `SUPABASE_ACCESS_TOKEN`, `DB_PASS`, `GBRAIN_POOLER_URL`,
-`GBRAIN_DATABASE_URL`, or any `postgresql://` substring to the telemetry
-invocation. The CI grep test in `test/skill-validation.test.ts` enforces
-this at build time.
-
----
-
-## Important Rules
-
-- **One rule for every secret.** PAT, DB_PASS, pooler URL: env-var only,
-  never argv, never logged, never persisted to disk by us. The only file
-  that holds the pooler URL long-term is `~/.gbrain/config.json`, written
-  by gbrain's own `init` at mode 0600 — that's gbrain's discipline, not
-  ours.
-- **STOP points are hard.** Gbrain doctor not healthy, D19 PATH shadow, D9
-  migrate timeout, smoke test failure — each is a STOP. Do not paper over.
-- **Concurrent-run lock.** At skill start, `mkdir ~/.gstack/.setup-gbrain.lock.d`
-  (atomic). If the mkdir fails, abort with: "Another `/setup-gbrain` instance
-  is running. Wait for it, or `rm -rf ~/.gstack/.setup-gbrain.lock.d` if
-  you're sure it's stale." Release on normal exit AND in the SIGINT trap.
-- **CLAUDE.md is the audit trail.** Always update it in Step 8 after a
-  successful setup.
+End with a Completion Status (per the preamble protocol):
+- **DONE** — all stages green, CLAUDE.md guidance block present, verdict GREEN.
+- **DONE_WITH_CONCERNS** — sync ran but at least one stage failed or capability
+  check failed. List which.
+- **BLOCKED** — could not acquire lock, gbrain not on PATH, or per-repo policy
+  is deny. State the blocker.
+- **NEEDS_CONTEXT** — /setup-gbrain has not been run, or `gbrain doctor` shows
+  a state that requires user decision (e.g., engine migration).
