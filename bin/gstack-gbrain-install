@@ -33,8 +33,8 @@
 set -euo pipefail
 
 # --- defaults ---
-PINNED_COMMIT="4e3fdb2b4f1fbb195da53f96d17d57e42a86e501"  # gbrain v0.26.2 (kbrain master)
-PINNED_TAG=""  # kbrain has no tags yet; verify by package.json version
+PINNED_COMMIT="5ea9207fb31b26e89d6b3a1d7afcec10c2563696"  # gbrain v0.27.0 (kbrain)
+PINNED_TAG="v0.27.0"
 GBRAIN_REPO_URL="https://github.com/donovan-yohan/kbrain.git"
 DEFAULT_INSTALL_DIR="${GBRAIN_INSTALL_DIR:-$HOME/gbrain}"
 INSTALL_DIR="$DEFAULT_INSTALL_DIR"
