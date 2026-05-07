@@ -1,0 +1,29 @@
+test/gstack-gbrain-sync.test.ts
+  f5473d62d08bbb6a 96-99,106-107
+sync-gbrain/SKILL.md.tmpl
+  f5473d62d08bbb6a 173,227
+bin/gstack-gbrain-sync.ts
+  f5473d62d08bbb6a 36,162-164,166-179,182,184-185,187-201,203-208
+setup-gbrain/SKILL.md.tmpl
+  f5473d62d08bbb6a 503
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "f67b675bef58d3d1e584c8c0efc9e5dd7d30db26",
+  "prompts": {
+    "f5473d62d08bbb6a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1df7380a-a318-4f74-8a09-d676b93b6990",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 2450,
+      "total_deletions": 91,
+      "accepted_lines": 51422,
+      "overriden_lines": 0
+    }
+  }
+}
