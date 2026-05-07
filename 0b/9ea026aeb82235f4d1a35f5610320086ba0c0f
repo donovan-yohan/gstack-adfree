@@ -1,0 +1,23 @@
+bin/gstack-gbrain-install
+  f5473d62d08bbb6a 36-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "0b9ea026aeb82235f4d1a35f5610320086ba0c0f",
+  "prompts": {
+    "f5473d62d08bbb6a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1df7380a-a318-4f74-8a09-d676b93b6990",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 6048,
+      "total_deletions": 2,
+      "accepted_lines": 6048,
+      "overriden_lines": 0
+    }
+  }
+}
