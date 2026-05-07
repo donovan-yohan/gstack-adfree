@@ -1,0 +1,29 @@
+test/gstack-memory-ingest.test.ts
+  f5473d62d08bbb6a 18,268-406
+bin/gstack-gbrain-sync.ts
+  f5473d62d08bbb6a 162,164-168,170,175-177,179-181,183-206
+bin/gstack-memory-ingest.ts
+  f5473d62d08bbb6a 37-39,749,756-767,776-813,816-817,819-824,828-832
+test/gstack-gbrain-sync.test.ts
+  f5473d62d08bbb6a 96-99,106-209
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "c45a3851a2e9c1b8baf4c933c585b2e2c5708a57",
+  "prompts": {
+    "f5473d62d08bbb6a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1df7380a-a318-4f74-8a09-d676b93b6990",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Donovan Yohan",
+      "messages": [],
+      "total_additions": 56089,
+      "total_deletions": 75,
+      "accepted_lines": 56032,
+      "overriden_lines": 0
+    }
+  }
+}
