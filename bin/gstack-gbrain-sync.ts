@@ -159,53 +159,51 @@ function originUrl(): string | null {
 }
 
 /**
- * Derive a stable source id for the cwd code corpus. Pattern:
- *   `gc-<owner-slug>-<repo>` for repos with a remote
- *   `gc-local-<repo>`        for repos with no remote
+ * Derive a stable source id for the cwd code corpus. Pattern: `gstack-code-<slug>`.
  *
- * The `gc-` prefix (gstack-code) keeps room for slug content under gbrain's
- * 32-char source id cap (`[a-z0-9]([a-z0-9-]{0,30}[a-z0-9])?`). Owner is
- * collapsed (drop hyphens) and truncated to 5 chars for disambiguation:
- *   `github.com/donovan-yohan/gstack-adfree` → `gc-donov-gstack-adfree` (22)
- *   `github.com/garrytan/gstack`              → `gc-garry-gstack`        (15)
- *   `github.com/donovan-yohan/kbrain`         → `gc-donov-kbrain`        (15)
+ * gbrain enforces source ids to be 1-32 lowercase alnum chars with optional interior
+ * hyphens. We use the last two segments of the canonical remote (org/repo) and skip
+ * the host — `github.com` etc. is the same for nearly every user and just eats budget.
+ * If the resulting id still exceeds 32 chars, we keep the tail (most distinctive end)
+ * and append a 6-char hash of the full slug for collision resistance.
  *
- * If the result still exceeds 32 chars (long monorepo names), the body is
- * truncated and an 8-char sha256 suffix is appended for uniqueness.
- *
- * NOTE: pre-v1.27 gstack used `gstack-code-<full-canonical-remote>` which
- * blew past the 32-char validator and contained dots from the host name.
- * Existing federated sources from prior runs keep their old ids until their
- * owners re-register them; nothing in /sync-gbrain auto-migrates orphans.
+ * Falls back to the repo basename when there is no origin (local repo).
  */
 function deriveCodeSourceId(repoPath: string): string {
-  const MAX_LEN = 32;
   const remote = canonicalizeRemote(originUrl());
-
-  let id: string;
   if (remote) {
-    // canonicalizeRemote returns "host/owner/.../repo" (lowercased, no scheme/.git).
-    const parts = remote.split("/").filter(Boolean);
-    const owner = (parts[1] || "x").replace(/[^a-z0-9]+/g, "").slice(0, 5) || "x";
-    const repo = (parts[parts.length - 1] || "repo")
-      .replace(/[^a-z0-9-]+/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "") || "repo";
-    id = `gc-${owner}-${repo}`;
-  } else {
-    const base = (repoPath.split("/").pop() || "repo")
-      .toLowerCase()
-      .replace(/[^a-z0-9-]+/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "") || "repo";
-    id = `gc-local-${base}`;
+    const segs = remote.split("/").filter(Boolean);
+    const slugSource = segs.slice(-2).join("-");
+    return constrainSourceId("gstack-code", slugSource);
   }
+  const base = repoPath.split("/").pop() || "repo";
+  return constrainSourceId("gstack-code", base);
+}
 
-  if (id.length <= MAX_LEN) return id;
-  // Long monorepo / unusual name — truncate and append a deterministic suffix.
-  const hash = createHash("sha256").update(id).digest("hex").slice(0, 8);
-  const head = id.slice(0, MAX_LEN - hash.length - 1).replace(/-+$/, "");
-  return `${head}-${hash}`;
+/**
+ * Build a gbrain-valid source id (1-32 lowercase alnum + interior hyphens). Sanitizes
+ * `raw`, prefixes with `prefix`, and falls back to a hashed-tail form when total length
+ * would exceed 32 chars.
+ */
+function constrainSourceId(prefix: string, raw: string): string {
+  const MAX = 32;
+  const slug = raw.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  // Empty slug after sanitize (e.g. raw was all non-alnum like "___") would
+  // produce "${prefix}-" which fails gbrain's validator on the trailing
+  // hyphen. Fall back to a deterministic hash of the original input so the
+  // result is stable across runs of the same repo.
+  if (!slug) {
+    const hash = createHash("sha1").update(raw || "_empty").digest("hex").slice(0, 6);
+    return `${prefix}-${hash}`;
+  }
+  const full = `${prefix}-${slug}`;
+  if (full.length <= MAX) return full;
+  const hash = createHash("sha1").update(slug).digest("hex").slice(0, 6);
+  // Total budget: prefix + "-" + tail + "-" + hash
+  const tailBudget = MAX - prefix.length - 2 - hash.length;
+  if (tailBudget < 1) return `${prefix}-${hash}`;
+  const tail = slug.slice(-tailBudget).replace(/^-+|-+$/g, "");
+  return tail ? `${prefix}-${tail}-${hash}` : `${prefix}-${hash}`;
 }
 
 function gbrainAvailable(): boolean {
