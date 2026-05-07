@@ -33,6 +33,7 @@ import { existsSync, statSync, mkdirSync, writeFileSync, readFileSync, unlinkSyn
 import { join, dirname } from "path";
 import { execSync, execFileSync, spawnSync } from "child_process";
 import { homedir } from "os";
+import { createHash } from "crypto";
 
 import { detectEngineTier, withErrorContext, canonicalizeRemote } from "../lib/gstack-memory-helpers";
 import { sourcePageCount } from "../lib/gbrain-sources";
@@ -158,20 +159,53 @@ function originUrl(): string | null {
 }
 
 /**
- * Derive a stable source id for the cwd code corpus. Pattern: `gstack-code-<slug>`,
- * where <slug> comes from canonicalizeRemote() then `/` → `-` (e.g.,
- * `github.com/donovan-yohan/gstack-adfree` → `gstack-code-github-com-donovan-yohan-gstack-adfree`).
+ * Derive a stable source id for the cwd code corpus. Pattern:
+ *   `gc-<owner-slug>-<repo>` for repos with a remote
+ *   `gc-local-<repo>`        for repos with no remote
  *
- * Falls back to `gstack-code-<basename(repo)>` when there is no origin (local repo).
+ * The `gc-` prefix (gstack-code) keeps room for slug content under gbrain's
+ * 32-char source id cap (`[a-z0-9]([a-z0-9-]{0,30}[a-z0-9])?`). Owner is
+ * collapsed (drop hyphens) and truncated to 5 chars for disambiguation:
+ *   `github.com/donovan-yohan/gstack-adfree` → `gc-donov-gstack-adfree` (22)
+ *   `github.com/garrytan/gstack`              → `gc-garry-gstack`        (15)
+ *   `github.com/donovan-yohan/kbrain`         → `gc-donov-kbrain`        (15)
+ *
+ * If the result still exceeds 32 chars (long monorepo names), the body is
+ * truncated and an 8-char sha256 suffix is appended for uniqueness.
+ *
+ * NOTE: pre-v1.27 gstack used `gstack-code-<full-canonical-remote>` which
+ * blew past the 32-char validator and contained dots from the host name.
+ * Existing federated sources from prior runs keep their old ids until their
+ * owners re-register them; nothing in /sync-gbrain auto-migrates orphans.
  */
 function deriveCodeSourceId(repoPath: string): string {
+  const MAX_LEN = 32;
   const remote = canonicalizeRemote(originUrl());
+
+  let id: string;
   if (remote) {
-    return `gstack-code-${remote.replace(/[\/\s]+/g, "-").replace(/-+/g, "-")}`;
+    // canonicalizeRemote returns "host/owner/.../repo" (lowercased, no scheme/.git).
+    const parts = remote.split("/").filter(Boolean);
+    const owner = (parts[1] || "x").replace(/[^a-z0-9]+/g, "").slice(0, 5) || "x";
+    const repo = (parts[parts.length - 1] || "repo")
+      .replace(/[^a-z0-9-]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "") || "repo";
+    id = `gc-${owner}-${repo}`;
+  } else {
+    const base = (repoPath.split("/").pop() || "repo")
+      .toLowerCase()
+      .replace(/[^a-z0-9-]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "") || "repo";
+    id = `gc-local-${base}`;
   }
-  // Fallback for repos without a remote.
-  const base = repoPath.split("/").pop() || "repo";
-  return `gstack-code-${base.toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/-+/g, "-")}`;
+
+  if (id.length <= MAX_LEN) return id;
+  // Long monorepo / unusual name — truncate and append a deterministic suffix.
+  const hash = createHash("sha256").update(id).digest("hex").slice(0, 8);
+  const head = id.slice(0, MAX_LEN - hash.length - 1).replace(/-+$/, "");
+  return `${head}-${hash}`;
 }
 
 function gbrainAvailable(): boolean {

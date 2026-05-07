@@ -170,7 +170,7 @@ Verbatim block content (copy exactly):
 GBrain is set up and synced on this machine. The agent should prefer gbrain
 over Grep when the question is semantic or when you don't know the exact
 identifier yet. Two indexed corpora available via the `gbrain` CLI:
-- This repo's code (registered as `gstack-code-<repo>` source).
+- This repo's code (registered as `gc-<owner>-<repo>` source).
 - `~/.gstack/` curated memory (registered as `gstack-brain-<user>` source via
   the existing federation pipeline).
 
@@ -224,7 +224,7 @@ gbrain status: GREEN
   CLI ............. OK   <gbrain version>
   Engine .......... OK   <pglite|supabase>
   Capability ...... OK   write+search round-trip
-  CWD source ...... OK   <gstack-code-{repo_slug}> (page_count=<N>)
+  CWD source ...... OK   <gc-{owner_slug}-{repo}> (page_count=<N>)
   ~/.gstack source. OK   <gstack-brain-{user}> (page_count=<N>) — managed by /setup-gbrain
   Memory sync ..... OK   <gbrain_sync_mode>
   CLAUDE.md ....... OK   ## GBrain Search Guidance present

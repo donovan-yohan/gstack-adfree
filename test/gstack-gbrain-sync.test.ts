@@ -93,18 +93,18 @@ describe("gstack-gbrain-sync CLI", () => {
   });
 
   it("dry-run derives a stable source id from the canonical git remote", () => {
-    // The source id pattern is `gstack-code-<canonicalized-remote>`. For this
-    // repo (github.com/garrytan/gstack), the slug should appear in the dry-run
-    // preview line. We don't pin the exact slug — just verify the prefix +
-    // that the preview command would target a source with id gstack-code-*.
+    // The source id pattern is `gc-<owner-slug>-<repo>` (32-char cap to satisfy
+    // gbrain's source-id validator). For this repo the dry-run preview line
+    // should show that prefix + a slug. We don't pin the exact slug — just
+    // verify the prefix and 32-char-or-less length contract.
     const home = makeTestHome();
     const gstackHome = join(home, ".gstack");
     mkdirSync(gstackHome, { recursive: true });
 
     const r = runScript(["--dry-run", "--code-only", "--quiet"], { HOME: home, GSTACK_HOME: gstackHome });
     expect(r.exitCode).toBe(0);
-    expect(r.stdout).toMatch(/gbrain sources add gstack-code-[a-z0-9-]+/);
-    expect(r.stdout).toMatch(/gbrain sync --strategy code --source gstack-code-[a-z0-9-]+/);
+    expect(r.stdout).toMatch(/gbrain sources add gc-[a-z0-9-]{1,29}\b/);
+    expect(r.stdout).toMatch(/gbrain sync --strategy code --source gc-[a-z0-9-]{1,29}\b/);
     rmSync(home, { recursive: true, force: true });
   });
 
