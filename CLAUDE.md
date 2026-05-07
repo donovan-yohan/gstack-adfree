@@ -807,3 +807,11 @@ Key routing rules:
 - Ship/deploy/PR → invoke /ship or /land-and-deploy
 - Save progress → invoke /context-save
 - Resume context → invoke /context-restore
+
+## GBrain Configuration (configured by /setup-gbrain)
+- Engine: postgres
+- Config file: ~/.gbrain/config.json (symlink → ~/.hermes/profiles/ebi/home/.gbrain/config.json)
+- Setup date: 2026-05-06
+- MCP registered: no
+- Memory sync: full
+- Current repo policy: read-write
