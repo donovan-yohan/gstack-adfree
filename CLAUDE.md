@@ -15,7 +15,7 @@ git merge upstream/main --no-edit
 - **Generated SKILL.md files:** never manually resolve — accept either side, then
   run `bun run gen:skill-docs` to regenerate from templates.
 - **office-hours/SKILL.md.tmpl:** accept upstream's version, then re-remove Phase 4.5
-  (Founder Signal Synthesis), Phase 6 (Handoff — Founder Discovery), and YC branding.
+  (Signal Synthesis), Phase 6 (Handoff — Discovery), and YC branding.
 - **URL-only files** (README, bin/gstack-update-check, gstack-upgrade/SKILL.md.tmpl):
   keep our `donovan-yohan/gstack-adfree` URLs — upstream won't change theirs, so
   these should merge cleanly.
@@ -151,11 +151,12 @@ gstack/
 ├── canary/          # /canary skill (post-deploy monitoring loop)
 ├── codex/           # /codex skill (multi-AI second opinion via OpenAI Codex CLI)
 ├── land-and-deploy/ # /land-and-deploy skill (merge → deploy → canary verify)
-├── office-hours/    # /office-hours skill (YC Office Hours — startup diagnostic + builder brainstorm)
+├── office-hours/    # /office-hours skill (startup diagnostic + builder brainstorm)
 ├── investigate/     # /investigate skill (systematic root-cause debugging)
 ├── retro/           # Retrospective skill (includes /retro global cross-project mode)
 ├── bin/             # CLI utilities (gstack-repo-mode, gstack-slug, gstack-config, etc.)
-├── document-release/ # /document-release skill (post-ship doc updates)
+├── document-release/ # /document-release skill (post-ship doc updates + Diataxis coverage map)
+├── document-generate/ # /document-generate skill (Diataxis doc generator: tutorial/how-to/reference/explanation)
 ├── cso/             # /cso skill (OWASP Top 10 + STRIDE security audit)
 ├── design-consultation/ # /design-consultation skill (design system from scratch)
 ├── design-shotgun/  # /design-shotgun skill (visual design exploration)
@@ -320,8 +321,12 @@ for `server.ts`. See `~/.gstack/projects/garrytan-gstack/ceo-plans/2026-04-19-pr
 
 **Thresholds** (in `security.ts`):
 - `BLOCK: 0.85` — single-layer score that would cause BLOCK if cross-confirmed
-- `WARN: 0.60` — cross-confirm threshold. When L4 AND L4b both >= 0.60 → BLOCK
+- `WARN: 0.75` — cross-confirm threshold. When L4 AND L4b both >= 0.75 → BLOCK
 - `LOG_ONLY: 0.40` — gates transcript classifier (skip Haiku when all layers < 0.40)
+- `SOLO_CONTENT_BLOCK: 0.92` — single-layer threshold for label-less content classifiers
+  (testsavant, deberta). Intentionally higher than `BLOCK` because these layers can't
+  distinguish "this is an injection" from "this looks like phishing aimed at the user."
+  The transcript classifier keeps a separate, label-gated solo path at `BLOCK` (0.85).
 
 **Ensemble rule:** BLOCK only when the ML content classifier AND the transcript
 classifier both report >= WARN. Single-layer high confidence degrades to WARN —
@@ -468,18 +473,46 @@ Accept findings where the "sloppy" pattern is the correct engineering choice.
 When reviewing or merging community PRs, **always AskUserQuestion** before accepting
 any commit that:
 
-1. **Touches ETHOS.md** — this file is Garry's personal builder philosophy. No edits
-   from external contributors or AI agents, period.
-2. **Removes or softens promotional material** — YC references, founder perspective,
-   and product voice are intentional. PRs that frame these as "unnecessary" or
-   "too promotional" must be rejected.
-3. **Changes Garry's voice** — the tone, humor, directness, and perspective in skill
-   templates, CHANGELOG, and docs are not generic. PRs that rewrite voice to be
-   more "neutral" or "professional" must be rejected.
+1. **Touches ETHOS.md** — preserve upstream philosophy unless the change is part
+   of an explicit fork-sanitization pass.
+2. **Reintroduces promotional material** — YC references, founder-first framing,
+   hiring CTAs, and personal-branding copy should stay out of this fork unless
+   explicitly requested.
+3. **Changes the skill voice contract** — direct, concrete, builder-to-builder is
+   intentional. Do not replace it with corporate or generic assistant prose.
 
-Even if the agent strongly believes a change improves the project, these three
-categories require explicit user approval via AskUserQuestion. No exceptions.
-No auto-merging. No "I'll just clean this up."
+When syncing upstream, keep workflow improvements and strip branding regressions.
+If in doubt, ask before reintroducing promotional material.
+
+## Checking out PRs from garrytan-agents
+
+When the user says "check out <PR link>" and the PR is from `garrytan-agents/gstack`
+(or any other fork that is NOT a collaborator on `garrytan/gstack`), do NOT just
+`gh pr checkout`. Fork PRs don't receive base-repo secrets (`ANTHROPIC_API_KEY`,
+`OPENAI_API_KEY`, etc.), so the eval/E2E CI jobs fail with empty-env auth errors
+regardless of what's set on the base repo.
+
+**Workflow:** push the branch to `garrytan/gstack` (the base repo) and re-target
+the PR from there.
+
+Concretely, after `gh pr checkout <N>`:
+
+1. Note the original PR number and head branch name.
+2. Push the same branch to the base repo: `git push origin HEAD:<branch-name>`
+   (origin = `garrytan/gstack`, since the worktree is set up with that remote).
+3. Close the fork PR (`gh pr close <N> --comment "moving to base-repo branch for secret access"`).
+4. Open a new PR from the base-repo branch: `gh pr create --base main --head <branch-name>`.
+5. New PR's workflows will get secrets automatically.
+
+Why not fix it on the fork side? `garrytan-agents` isn't a collaborator on
+`garrytan/gstack`. Adding it as a collaborator (option A) or flipping the
+repo-wide "send secrets to fork PRs" toggle (option B) would let secrets reach
+fork PRs from anyone — broader blast radius than just moving this one branch.
+Option C (this section) keeps secret-distribution scope tight.
+
+If the user asks you to skip the move (e.g., "just leave it as a fork PR"),
+respect that — eval CI will fail with empty-env auth, but check-freshness,
+workflow-lint, and windows-tests will still pass on the fork PR.
 
 ## CHANGELOG + VERSION style
 
@@ -815,3 +848,40 @@ Key routing rules:
 - MCP registered: no
 - Memory sync: full
 - Current repo policy: read-write
+
+## GBrain Search Guidance (configured by /sync-gbrain)
+<!-- gstack-gbrain-search-guidance:start -->
+
+GBrain is set up and synced on this machine. The agent should prefer gbrain
+over Grep when the question is semantic or when you don't know the exact
+identifier yet.
+
+**This worktree is pinned to a worktree-scoped code source** via the
+`.gbrain-source` file in the repo root (kubectl-style context). Any
+`gbrain code-def`, `code-refs`, `code-callers`, `code-callees`, or `query`
+call from anywhere under this worktree routes to that source by default —
+no `--source` flag needed. Conductor sibling worktrees of the same repo
+each have their own pin and their own indexed pages, so semantic results
+match the actual code on disk in this worktree.
+
+Two indexed corpora available via the `gbrain` CLI:
+- This worktree's code (auto-pinned via `.gbrain-source`).
+- `~/.gstack/` curated memory (registered as `gstack-brain-<user>` source via
+  the existing federation pipeline).
+
+Prefer gbrain when:
+- "Where is X handled?" / semantic intent, no exact string yet:
+    `gbrain search "<terms>"` or `gbrain query "<question>"`
+- "Where is symbol Y defined?" / symbol-based code questions:
+    `gbrain code-def <symbol>` or `gbrain code-refs <symbol>`
+- "What calls Y?" / "What does Y depend on?":
+    `gbrain code-callers <symbol>` / `gbrain code-callees <symbol>`
+- "What did we decide last time?" / past plans, retros, learnings:
+    `gbrain search "<terms>" --source gstack-brain-<user>`
+
+Grep is still right for known exact strings, regex, multiline patterns, and
+file globs. Run `/sync-gbrain` after meaningful code changes; for ongoing
+auto-sync across all worktrees, run `gbrain autopilot --install` once per
+machine — gbrain's daemon handles incremental refresh on a schedule.
+
+<!-- gstack-gbrain-search-guidance:end -->
