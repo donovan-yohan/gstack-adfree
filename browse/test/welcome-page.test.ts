@@ -137,7 +137,7 @@ describe('welcome page served via HTTP', () => {
   // ─── Footer ───────────────────────────────────────────────────────
 
   test('has footer with attribution', () => {
-    expect(html).toContain('Garry Tan');
-    expect(html).toContain('github.com/garrytan/gstack');
+    expect(html).toContain('MIT licensed');
+    expect(html).toContain('github.com/donovan-yohan/gstack-adfree');
   });
 });
