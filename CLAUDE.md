@@ -60,25 +60,16 @@ bun run slop:diff     # slop findings in files changed on this branch only
 `test:evals` requires `ANTHROPIC_API_KEY`. Codex E2E tests (`test/codex-e2e.test.ts`)
 use Codex's own auth from `~/.codex/` config — no `OPENAI_API_KEY` env var needed.
 
-**Where the keys live on this machine.** Conductor workspaces don't inherit the
-user's interactive shell env, so `ANTHROPIC_API_KEY` and `OPENAI_API_KEY` aren't
-in the default process env. Before running any paid eval / E2E, source them from
-`~/.zshrc` (that's where Garry keeps them):
+**Env keys in Conductor workspaces.** The `GSTACK_*` env-shim (v1.39.2.0+,
+`lib/conductor-env-shim.ts`) promotes `GSTACK_ANTHROPIC_API_KEY` /
+`GSTACK_OPENAI_API_KEY` to their canonical names inside gstack's TS binaries.
+Tests run through gstack entrypoints inherit this promotion automatically.
+Don't echo the key value to stdout, logs, or shell history. When passing to a
+test's Agent SDK, do NOT pass `env: {...}` to `runAgentSdkTest` — the SDK's
+auth pipeline doesn't pick up the key the same way when env is supplied as an
+object (confirmed failure mode). Mutate `process.env.ANTHROPIC_API_KEY`
+ambiently before the call and restore in `finally`.
 
-```bash
-bash -c '
-  eval "$(grep -E "^export (ANTHROPIC_API_KEY|OPENAI_API_KEY)=" ~/.zshrc)"
-  export ANTHROPIC_API_KEY OPENAI_API_KEY
-  EVALS=1 EVALS_TIER=periodic bun test test/skill-e2e-<whatever>.test.ts
-'
-```
-
-Do not echo the key value anywhere (stdout, logs, shell history). The grep+eval
-pattern keeps it in process env only. When passing to a test's Agent SDK, do NOT
-pass `env: {...}` to `runAgentSdkTest` — the SDK's auth pipeline doesn't pick up
-the key the same way when env is supplied as an object (confirmed failure mode).
-Instead, mutate `process.env.ANTHROPIC_API_KEY` ambiently before the call and
-restore in `finally`.
 E2E tests stream progress in real-time (tool-by-tool via `--output-format stream-json
 --verbose`). Results are persisted to `~/.gstack-dev/evals/` with auto-comparison
 against the previous run.
@@ -269,6 +260,24 @@ Activity / Refs / Inspector as debug overlays behind the footer's
 flow, dual-token model, and threat-model boundary — silent failures
 here usually trace to not understanding the cross-component flow.
 
+**Embedder terminal-agent ownership** (v1.42.1.0+, identity-based kill v1.44.0.0+).
+`buildFetchHandler` in `browse/src/server.ts` accepts `ServerConfig.ownsTerminalAgent?:
+boolean` (default `true`). When `true`, factory shutdown runs the full teardown:
+identity-based kill via `killAgentByRecord(readAgentRecord(stateDir))` from
+`browse/src/terminal-agent-control.ts` plus `safeUnlinkQuiet` on
+`<stateDir>/terminal-port`, `<stateDir>/terminal-internal-token`, and
+`<stateDir>/terminal-agent-pid` (the per-boot agent record introduced in v1.44).
+Embedders (e.g. the gbrowser phoenix overlay) that pre-launch their own PTY
+server must pass `false` so their discovery files survive gstack teardown cycles.
+The flag is the third caller-owned teardown gate in `ServerConfig` (alongside
+`xvfb?` and `proxyBridge?`); polarity is inverted (explicit bool vs presence) and
+documented in the field's JSDoc. CLI `start()` always passes `true` explicitly —
+the static-grep test in `browse/test/server-embedder-terminal-port.test.ts` fails
+CI if a refactor drops it. Pre-v1.44 used `pkill -f terminal-agent\.ts` (regex
+match) which would kill sibling gstack sessions on the same host; the new
+`browse/test/terminal-agent-pid-identity.test.ts` static-grep tripwire fails CI
+if any source file re-introduces `pkill ... terminal-agent` or `spawnSync('pkill', ...)`.
+
 **WebSocket auth uses Sec-WebSocket-Protocol, not cookies.** Browsers
 can't set `Authorization` on a WebSocket upgrade, but they CAN set
 `Sec-WebSocket-Protocol` via `new WebSocket(url, [token])`. The agent
@@ -301,6 +310,31 @@ to `~/.gstack/security/attempts.jsonl` via `tunnel-denial-log.ts`. Before editin
 [ARCHITECTURE.md](ARCHITECTURE.md#dual-listener-tunnel-architecture-v1600) —
 the module boundary (no imports from `token-registry.ts` into `sse-session-cookie.ts`)
 is load-bearing for scope isolation.
+
+**Unicode sanitization at server egress** (v1.38.0.0+). Every server egress that
+ships page-content-derived strings MUST go through `JSON.stringify(payload,
+sanitizeReplacer)` for object payloads or `sanitizeLoneSurrogates(body)` for text
+bodies. Lone UTF-16 surrogate halves from CDP page content otherwise reach the
+Anthropic API as `\uD800`-style escapes and trigger a 400. Wired at four egress
+points today: `handleCommandInternal` (HTTP + batch via a sanitizing wrapper around
+`handleCommandInternalImpl`) and both SSE producers (`/activity/stream`,
+`/inspector/events`). Post-stringify regex is a no-op — `JSON.stringify` has
+already escaped the surrogate before regex could match, so the replacer must run
+inside the encoding pipeline. Before adding a new SSE/WebSocket writer or HTTP
+response in `server.ts`, read
+[ARCHITECTURE.md](ARCHITECTURE.md#unicode-sanitization-at-server-egress-v13800).
+`browse/test/server-sanitize-surrogates.test.ts` pins the wiring with invariant
+tests, so bypasses fail CI.
+
+**Setup symlink hardening** (v1.38.0.0+). Every link site in `setup` MUST route
+through the `_link_or_copy SRC DST` helper near the `IS_WINDOWS` detection. On
+Windows without Developer Mode, plain `ln -snf` produces frozen file copies that
+don't refresh on `git pull` — silent staleness across every host adapter. The
+helper preserves `ln -snf` on Unix and switches to `cp -R` / `cp -f` on Windows.
+`test/setup-windows-fallback.test.ts` enforces a static invariant: a single raw
+`ln` call outside the helper body fails CI. Windows users get a one-line note
+from `_print_windows_copy_note_once` reminding them to re-run `./setup` after
+every `git pull`.
 
 **Sidebar security stack** (layered defense against prompt injection):
 

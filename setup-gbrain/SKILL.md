@@ -671,9 +671,7 @@ Do not log obvious facts or one-time transient errors.
 
 ## Plan Status Footer
 
-In plan mode before ExitPlanMode: if the plan file lacks `## GSTACK REVIEW REPORT`, run `~/.claude/skills/gstack/bin/gstack-review-read` and append the standard runs/status/findings table. With `NO_REVIEWS` or empty, append a 5-row placeholder with verdict "NO REVIEWS YET — run `/autoplan`". If a richer report exists, skip.
-
-PLAN MODE EXCEPTION — always allowed (it's the plan file).
+Skills that run plan reviews (`/plan-*-review`, `/codex review`) include the EXIT PLAN MODE GATE blocking checklist at the end of the skill, which verifies the plan file ends with `## GSTACK REVIEW REPORT` before ExitPlanMode is called. Skills that don't run plan reviews (operational skills like `/ship`, `/qa`, `/review`) typically don't operate in plan mode and have no review report to verify; this footer is a no-op for them. Writing the plan file is the one edit allowed in plan mode.
 
 # /setup-gbrain — Coding-Agent Onboarding for gbrain
 
@@ -774,7 +772,14 @@ with `GSTACK_DETECT_NO_CACHE=1` (busts the 60s cache). If the new
 ```bash
 BACKUP="$HOME/.gbrain/config.json.gstack-bak-$(date +%s)"
 mv "$HOME/.gbrain/config.json" "$BACKUP"
-if ! gbrain init --pglite --json; then
+# gstack default: voyage-code-3 (1024d) when VOYAGE_API_KEY is set — best for
+# code retrieval. Without the key, fall back to gbrain's own auto-selected
+# embedding provider chain (OpenAI 1536d when OPENAI_API_KEY is present, etc.).
+GBRAIN_EMBED_FLAGS=""
+if [ -n "${VOYAGE_API_KEY:-}" ]; then
+  GBRAIN_EMBED_FLAGS="--embedding-model voyage:voyage-code-3 --embedding-dimensions 1024"
+fi
+if ! gbrain init --pglite --json $GBRAIN_EMBED_FLAGS; then
   # Restore on failure
   mv "$BACKUP" "$HOME/.gbrain/config.json"
   echo "gbrain init failed. Your previous config was restored at $HOME/.gbrain/config.json." >&2
@@ -981,10 +986,18 @@ Then follow the same secret-read + verify + init flow as Path 1.
 ### Path 3 (PGLite local)
 
 ```bash
-gbrain init --pglite --json
+# gstack default: voyage-code-3 (1024d) when VOYAGE_API_KEY is set — code
+# retrieval beats general-purpose embeddings on real code queries (validated
+# A/B). Without the key, gbrain auto-selects (OpenAI 1536d when available).
+GBRAIN_EMBED_FLAGS=""
+if [ -n "${VOYAGE_API_KEY:-}" ]; then
+  GBRAIN_EMBED_FLAGS="--embedding-model voyage:voyage-code-3 --embedding-dimensions 1024"
+fi
+gbrain init --pglite --json $GBRAIN_EMBED_FLAGS
 ```
 
-Done. No network, no secrets.
+Done. No network, no secrets (beyond Voyage embedding API calls during sync, if
+`VOYAGE_API_KEY` is set — ~$0.18 per 1M tokens, pennies per repo).
 
 ### Path 4 (Remote gbrain MCP — HTTP transport with bearer token)
 
@@ -1064,7 +1077,15 @@ if [ -f "$HOME/.gbrain/config.json" ]; then
   BACKUP="$HOME/.gbrain/config.json.gstack-bak-$(date +%s)"
   mv "$HOME/.gbrain/config.json" "$BACKUP"
 fi
-if ! gbrain init --pglite --json; then
+# gstack default for local code-search PGLite: voyage-code-3 (1024d) when
+# VOYAGE_API_KEY is set. It wins the A/B over voyage-4-large and OpenAI
+# text-embedding-3-large on this codebase's symbol queries. Falls back to
+# gbrain's auto-selected provider when the key isn't present.
+GBRAIN_EMBED_FLAGS=""
+if [ -n "${VOYAGE_API_KEY:-}" ]; then
+  GBRAIN_EMBED_FLAGS="--embedding-model voyage:voyage-code-3 --embedding-dimensions 1024"
+fi
+if ! gbrain init --pglite --json $GBRAIN_EMBED_FLAGS; then
   if [ -n "${BACKUP:-}" ] && [ -f "$BACKUP" ]; then mv "$BACKUP" "$HOME/.gbrain/config.json"; fi
   echo "gbrain init failed. Existing config (if any) was restored. PGLite at ~/.gbrain/pglite/ may be in a partial state — \`rm -rf ~/.gbrain/pglite\` to reset." >&2
   echo "Continuing setup without local code search; you can re-run /setup-gbrain to retry." >&2

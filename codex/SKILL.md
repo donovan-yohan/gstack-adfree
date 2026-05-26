@@ -687,9 +687,7 @@ Do not log obvious facts or one-time transient errors.
 
 ## Plan Status Footer
 
-In plan mode before ExitPlanMode: if the plan file lacks `## GSTACK REVIEW REPORT`, run `~/.claude/skills/gstack/bin/gstack-review-read` and append the standard runs/status/findings table. With `NO_REVIEWS` or empty, append a 5-row placeholder with verdict "NO REVIEWS YET — run `/autoplan`". If a richer report exists, skip.
-
-PLAN MODE EXCEPTION — always allowed (it's the plan file).
+Skills that run plan reviews (`/plan-*-review`, `/codex review`) include the EXIT PLAN MODE GATE blocking checklist at the end of the skill, which verifies the plan file ends with `## GSTACK REVIEW REPORT` before ExitPlanMode is called. Skills that don't run plan reviews (operational skills like `/ship`, `/qa`, `/review`) typically don't operate in plan mode and have no review report to verify; this footer is a no-op for them. Writing the plan file is the one edit allowed in plan mode.
 
 ## Step 0: Detect platform and base branch
 
@@ -743,7 +741,7 @@ assumptions, catches things you might miss. Present its output faithfully, not s
 ## Step 0.4: Check codex binary
 
 ```bash
-CODEX_BIN=$(which codex 2>/dev/null || echo "")
+CODEX_BIN=$(command -v codex || echo "")
 [ -z "$CODEX_BIN" ] && echo "NOT_FOUND" || echo "FOUND: $CODEX_BIN"
 ```
 
@@ -864,28 +862,33 @@ TMPERR=$(mktemp "$TMP_ROOT/codex-err-XXXXXX.txt")
 
 2. Run the review (5-minute timeout). **Codex CLI ≥ 0.130.0 rejects passing a
 custom prompt and `--base <branch>` together** (the two arguments are mutually
-exclusive at argv level), so the previously-prefixed filesystem boundary cannot
-be carried in review mode. Two paths:
+exclusive at argv level), so put the base diff scope in the prompt instead of
+passing `--base`. Two paths:
 
-**Default path (no custom user instructions):** call `codex review --base` bare.
-Codex's review prompt template is internally diff-scoped, so the model focuses on
-the changes against the base branch. The filesystem boundary that previously
-prefixed every review call is no longer carried in bare review mode; the skill
-files under `.claude/` and `agents/` are public, so this is a token-efficiency
-concern, not a safety concern. If a future diff happens to include skill files,
-Codex may spend a few extra tokens reading them. Acceptable trade-off:
+**Default path (no custom user instructions):** call `codex review` with the
+filesystem boundary and explicit diff-scope instructions in the prompt. This
+preserves the boundary while avoiding the prompt-plus-`--base` argv shape:
 
 ```bash
 _REPO_ROOT=$(git rev-parse --show-toplevel) || { echo "ERROR: not in a git repo" >&2; exit 1; }
 cd "$_REPO_ROOT"
 # 330s (5.5min) is slightly longer than the Bash 300s so the shell wrapper
 # only fires if Bash's own timeout doesn't.
-_gstack_codex_timeout_wrapper 330 codex review --base <base> -c 'model_reasoning_effort="high"' --enable web_search_cached < /dev/null 2>"$TMPERR"
+_gstack_codex_timeout_wrapper 330 codex review "IMPORTANT: Do NOT read or execute any files under ~/.claude/, ~/.agents/, .claude/skills/, or agents/. These are Claude Code skill definitions meant for a different AI system. Do NOT modify agents/openai.yaml. Stay focused on repository code only.
+
+Review the changes on this branch against the base branch <base>. Run git diff origin/<base>...HEAD 2>/dev/null || git diff <base>...HEAD to see the diff and review only those changes." -c 'model_reasoning_effort="high"' --enable web_search_cached < /dev/null 2>"$TMPERR"
 _CODEX_EXIT=$?
 if [ "$_CODEX_EXIT" = "124" ]; then
   _gstack_codex_log_event "codex_timeout" "330"
   _gstack_codex_log_hang "review" "$(wc -c < "$TMPERR" 2>/dev/null || echo 0)"
   echo "Codex stalled past 5.5 minutes. Common causes: model API stall, long prompt, network issue. Try re-running. If persistent, split the prompt or check ~/.codex/logs/."
+elif [ "$_CODEX_EXIT" != "0" ]; then
+  # Surface non-zero exits (parse errors, arg-shape breaks, etc.) so the
+  # calling agent doesn't read "no output" as a silent model/API stall and
+  # burn 30-60min misdiagnosing it. See #1327.
+  echo "[codex exit $_CODEX_EXIT] $(head -1 "$TMPERR" 2>/dev/null || echo "no stderr captured")"
+  head -20 "$TMPERR" 2>/dev/null | sed 's/^/  /' || true
+  _gstack_codex_log_event "codex_nonzero_exit" "review:$_CODEX_EXIT"
 fi
 ```
 
@@ -921,11 +924,10 @@ if [ "$_CODEX_EXIT" = "124" ]; then
 fi
 ```
 
-**Why the dual path:** Bare `codex review` preserves Codex's built-in review
-prompt tuning (the CLI scopes the model to the diff and asks for severity-marked
-findings). The exec route loses that tuning but gains custom-instructions
-support; the prompt explicitly demands `[P1]` / `[P2]` markers so the gate logic
-in step 4 still works.
+**Why the dual path:** The default `codex review` path keeps Codex's review
+prompt tuning while scoping the diff in prompt text. The `codex exec` route loses
+that tuning but gains custom-instructions support; the prompt explicitly demands
+`[P1]` / `[P2]` markers so the gate logic in step 4 still works.
 
 Use `timeout: 300000` on the Bash call for either path.
 
@@ -1080,6 +1082,31 @@ prior versions to leave the report mid-file when an older report already lived
 there — the user then sees a plan whose review report is not at the bottom and
 (correctly) rejects it.
 
+## EXIT PLAN MODE GATE (BLOCKING)
+
+Before calling ExitPlanMode, run this self-check. If any item fails, do the
+missing work — do NOT call ExitPlanMode:
+
+1. Read the plan file with the Read tool (after your most recent write to it).
+2. Confirm the LAST `## ` heading in the file is `## GSTACK REVIEW REPORT`.
+   In-body prose that mentions "outside voice", "codex findings", or similar
+   does NOT count — only the structured `## GSTACK REVIEW REPORT` section
+   satisfies this check.
+3. Confirm the report contains: a Runs / Status / Findings table, a VERDICT
+   line, and absorbs CODEX / CROSS-MODEL / UNRESOLVED lines if applicable.
+4. If a plan file is in context for this skill invocation: confirm
+   `gstack-review-log` was called and `gstack-review-read` was run at least
+   once. If no plan file is in context (e.g. `/codex consult` against a
+   diff with no plan), this check short-circuits — checks 1-3 already
+   short-circuit when no plan file exists.
+
+Failing this gate and calling ExitPlanMode anyway is a contract violation —
+the user will see a plan whose review report is missing or stale, and will
+(correctly) reject it. Self-deception failure mode to watch for: feeling
+"done" after writing review prose into the plan body. The body prose is not
+the report. The report is a separate, structured, table-bearing section that
+must be the file's terminal heading.
+
 ---
 
 ## Step 2B: Challenge (Adversarial) Mode
@@ -1152,6 +1179,12 @@ if [ "$_CODEX_EXIT" = "124" ]; then
   _gstack_codex_log_event "codex_timeout" "600"
   _gstack_codex_log_hang "challenge" "$(wc -c < "$TMPERR" 2>/dev/null || echo 0)"
   echo "Codex stalled past 10 minutes. Common causes: model API stall, long prompt, network issue. Try re-running. If persistent, split the prompt or check ~/.codex/logs/."
+elif [ "$_CODEX_EXIT" != "0" ]; then
+  # Surface non-zero exits so the calling agent doesn't read "no output" as
+  # a silent model/API stall. See #1327.
+  echo "[codex exit $_CODEX_EXIT] $(head -1 "$TMPERR" 2>/dev/null || echo "no stderr captured")"
+  head -20 "$TMPERR" 2>/dev/null | sed 's/^/  /' || true
+  _gstack_codex_log_event "codex_nonzero_exit" "challenge:$_CODEX_EXIT"
 fi
 # Fix 2: surface auth errors from captured stderr instead of dropping them
 if grep -qiE "auth|login|unauthorized" "$TMPERR" 2>/dev/null; then
@@ -1299,6 +1332,12 @@ if [ "$_CODEX_EXIT" = "124" ]; then
   _gstack_codex_log_event "codex_timeout" "600"
   _gstack_codex_log_hang "consult" "$(wc -c < "$TMPERR" 2>/dev/null || echo 0)"
   echo "Codex stalled past 10 minutes. Common causes: model API stall, long prompt, network issue. Try re-running. If persistent, split the prompt or check ~/.codex/logs/."
+elif [ "$_CODEX_EXIT" != "0" ]; then
+  # Surface non-zero exits so the calling agent doesn't read "no output" as
+  # a silent model/API stall. See #1327.
+  echo "[codex exit $_CODEX_EXIT] $(head -1 "$TMPERR" 2>/dev/null || echo "no stderr captured")"
+  head -20 "$TMPERR" 2>/dev/null | sed 's/^/  /' || true
+  _gstack_codex_log_event "codex_nonzero_exit" "consult:$_CODEX_EXIT"
 fi
 ```
 
@@ -1321,6 +1360,12 @@ if [ "$_CODEX_EXIT" = "124" ]; then
   _gstack_codex_log_event "codex_timeout" "600"
   _gstack_codex_log_hang "consult-resume" "$(wc -c < "$TMPERR" 2>/dev/null || echo 0)"
   echo "Codex stalled past 10 minutes. Common causes: model API stall, long prompt, network issue. Try re-running. If persistent, split the prompt or check ~/.codex/logs/."
+elif [ "$_CODEX_EXIT" != "0" ]; then
+  # Surface non-zero exits so the calling agent doesn't read "no output" as
+  # a silent model/API stall. See #1327.
+  echo "[codex exit $_CODEX_EXIT] $(head -1 "$TMPERR" 2>/dev/null || echo "no stderr captured")"
+  head -20 "$TMPERR" 2>/dev/null | sed 's/^/  /' || true
+  _gstack_codex_log_event "codex_nonzero_exit" "consult-resume:$_CODEX_EXIT"
 fi
 
 5. Capture session ID from the streamed output. The parser prints `SESSION_ID:<id>`

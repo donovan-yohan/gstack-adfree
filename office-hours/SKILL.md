@@ -722,9 +722,7 @@ Do not log obvious facts or one-time transient errors.
 
 ## Plan Status Footer
 
-In plan mode before ExitPlanMode: if the plan file lacks `## GSTACK REVIEW REPORT`, run `~/.claude/skills/gstack/bin/gstack-review-read` and append the standard runs/status/findings table. With `NO_REVIEWS` or empty, append a 5-row placeholder with verdict "NO REVIEWS YET — run `/autoplan`". If a richer report exists, skip.
-
-PLAN MODE EXCEPTION — always allowed (it's the plan file).
+Skills that run plan reviews (`/plan-*-review`, `/codex review`) include the EXIT PLAN MODE GATE blocking checklist at the end of the skill, which verifies the plan file ends with `## GSTACK REVIEW REPORT` before ExitPlanMode is called. Skills that don't run plan reviews (operational skills like `/ship`, `/qa`, `/review`) typically don't operate in plan mode and have no review report to verify; this footer is a no-op for them. Writing the plan file is the one edit allowed in plan mode.
 
 ## SETUP (run this check BEFORE any browse command)
 
@@ -1148,7 +1146,7 @@ Use AskUserQuestion to confirm. If the user disagrees with a premise, revise und
 **Binary check first:**
 
 ```bash
-which codex 2>/dev/null && echo "CODEX_AVAILABLE" || echo "CODEX_NOT_AVAILABLE"
+command -v codex >/dev/null 2>&1 && echo "CODEX_AVAILABLE" || echo "CODEX_NOT_AVAILABLE"
 ```
 
 Use AskUserQuestion (regardless of codex availability):
@@ -1343,8 +1341,11 @@ If the JSON contains `"regenerated": true`:
 1. Read `regenerateAction` (or `remixSpec` for remix requests)
 2. Generate new variants with `$D iterate` or `$D variants` using updated brief
 3. Create new board with `$D compare`
-4. POST the new HTML to the running server via `curl -X POST http://localhost:PORT/api/reload -H 'Content-Type: application/json' -d '{"html":"$_DESIGN_DIR/design-board.html"}'`
-   (parse the port from stderr: look for `SERVE_STARTED: port=XXXXX`)
+4. POST the new HTML to the running board. Parse the board URL from stderr
+   (`BOARD_URL: http://127.0.0.1:N/boards/<id>/` — the daemon path) or fall
+   back to the legacy port (`SERVE_STARTED: port=N` — only emitted under
+   `--no-daemon`, hits `/api/reload` root). Daemon path:
+   `curl -X POST "${BOARD_URL}api/reload" -H 'Content-Type: application/json' -d '{"html":"$_DESIGN_DIR/design-board.html"}'`
 5. Board auto-refreshes in the same tab
 
 If `"regenerated": false`: proceed with the approved variant.
@@ -1420,7 +1421,7 @@ The screenshot file at `/tmp/gstack-sketch.png` can be referenced by downstream 
 After the wireframe is approved, offer outside design perspectives:
 
 ```bash
-which codex 2>/dev/null && echo "CODEX_AVAILABLE" || echo "CODEX_NOT_AVAILABLE"
+command -v codex >/dev/null 2>&1 && echo "CODEX_AVAILABLE" || echo "CODEX_NOT_AVAILABLE"
 ```
 
 If Codex is available, use AskUserQuestion:

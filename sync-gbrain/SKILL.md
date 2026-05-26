@@ -671,9 +671,7 @@ Do not log obvious facts or one-time transient errors.
 
 ## Plan Status Footer
 
-In plan mode before ExitPlanMode: if the plan file lacks `## GSTACK REVIEW REPORT`, run `~/.claude/skills/gstack/bin/gstack-review-read` and append the standard runs/status/findings table. With `NO_REVIEWS` or empty, append a 5-row placeholder with verdict "NO REVIEWS YET — run `/autoplan`". If a richer report exists, skip.
-
-PLAN MODE EXCEPTION — always allowed (it's the plan file).
+Skills that run plan reviews (`/plan-*-review`, `/codex review`) include the EXIT PLAN MODE GATE blocking checklist at the end of the skill, which verifies the plan file ends with `## GSTACK REVIEW REPORT` before ExitPlanMode is called. Skills that don't run plan reviews (operational skills like `/ship`, `/qa`, `/review`) typically don't operate in plan mode and have no review report to verify; this footer is a no-op for them. Writing the plan file is the one edit allowed in plan mode.
 
 # /sync-gbrain — Keep gbrain current and teach the agent to use it
 
@@ -750,7 +748,9 @@ BEFORE invoking the orchestrator:
   "Your brain queries (the `mcp__gbrain__*` tools) work via remote MCP, but
   symbol code search needs a local PGLite. Run `/setup-gbrain` and pick
   'Yes' at the new 'local code index' prompt (Step 4.5), or run
-  `gbrain init --pglite --json` directly. Continuing without code stage."
+  `gbrain init --pglite --json --embedding-model voyage:voyage-code-3 --embedding-dimensions 1024`
+  directly (drop the voyage flags if `VOYAGE_API_KEY` isn't set). Continuing
+  without code stage."
   Then proceed to Step 2 — the orchestrator's `runCodeImport()` and
   `runMemoryIngest()` will return SKIP per plan D12; only `runBrainSyncPush()`
   will run. Do NOT abort.
@@ -763,7 +763,8 @@ BEFORE invoking the orchestrator:
     1. Re-run /setup-gbrain — Step 1.5 offers Retry / Switch to PGLite /
        Switch brain mode / Quit (plan D4).
     2. Repair manually: mv ~/.gbrain/config.json ~/.gbrain/config.json.bak
-       && gbrain init --pglite --json
+       && gbrain init --pglite --json --embedding-model voyage:voyage-code-3 \
+          --embedding-dimensions 1024   (drop voyage flags if VOYAGE_API_KEY unset)
   Re-run /sync-gbrain after.
   ```
   Do NOT continue — the orchestrator would skip code+memory and only run
@@ -834,13 +835,25 @@ Capability check (per /plan-eng-review §6):
 
 ```bash
 SLUG="_capability_check_$$"
+CAPABILITY_OK=0
 if [ -f ~/.gbrain/config.json ] && \
-   gbrain --version 2>/dev/null | grep -q '^gbrain ' && \
-   echo "ping" | gbrain put "$SLUG" >/dev/null 2>&1 && \
-   gbrain search "ping" 2>/dev/null | grep -q "$SLUG"; then
-  CAPABILITY_OK=1
-else
-  CAPABILITY_OK=0
+   gbrain --version 2>/dev/null | grep -q '^gbrain '; then
+  # GBRAIN_PREPARE=true ensures prepared statements stay enabled when
+  # connecting through a PgBouncer transaction-mode pooler (port 6543).
+  # Without it, search silently returns no results (#1435).
+  export GBRAIN_PREPARE=true
+  if echo "ping" | gbrain put "$SLUG" >/dev/null 2>&1; then
+    # Retry search up to 3 times with 1s delay — under transaction-mode
+    # pooling the search index may not be visible on the next connection
+    # immediately after the put.
+    for _attempt in 1 2 3; do
+      if gbrain search "ping" 2>/dev/null | grep -q "$SLUG"; then
+        CAPABILITY_OK=1
+        break
+      fi
+      sleep 1
+    done
+  fi
 fi
 gbrain delete "$SLUG" 2>/dev/null || true
 ```
