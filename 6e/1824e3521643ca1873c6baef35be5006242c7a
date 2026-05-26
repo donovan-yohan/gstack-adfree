@@ -1,0 +1,659 @@
+browse/src/terminal-agent.ts
+  ai_agent 28,35-55,57-68,80,85-98,100-227,377-488,499-503,505,507-510,512,517,519-558,630-634,636,650-719,723-725,731-732,734-739,742,745-748,768-784,789-791,793,804,806-828,830-831,833-846,976-982,987,989-994
+browse/test/server-factory.test.ts
+  ai_agent 1,4-5,11-16,202-522
+browse/test/browser-skills-e2e.test.ts
+  ai_agent 20,23-26
+browse/test/regression-pr1169-pdf-from-file-invalid-json.test.ts
+  ai_agent 1-83
+plan-ceo-review/SKILL.md.tmpl
+  ai_agent 739-740,895-896
+test/gstack-memory-helpers.test.ts
+  ai_agent 15,99-139,385-420
+test/fixtures/ios-qa/FixtureApp/Sources/DebugBridgeUI/DebugOverlay.swift
+  ai_agent 1-137
+document-release/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 674
+ios-qa/daemon/src/index.ts
+  ai_agent 1-446
+ios-qa/scripts/gen-accessors-tool/Sources/GenAccessors/main.swift
+  ai_agent 1-179
+scripts/resolvers/review.ts
+  ai_agent 161-187,314,426,470-472,474,492,507,536,603
+setup-gbrain/SKILL.md.tmpl
+  ai_agent 128-135,342-349,352-353,433-441
+ios-qa/templates/DebugBridgeManager.swift.template
+  ai_agent 1-49
+CLAUDE.md
+  ai_agent 63-71,263-280,314-337
+scripts/resolvers/gbrain.ts
+  ai_agent 40-43,45-52,55,65-72
+test/build-script-shell-compat.test.ts
+  ai_agent 1-54
+learn/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 672
+.github/workflows/pr-title-sync.yml
+  ai_agent 16
+.github/workflows/evals.yml
+  ai_agent 18,59,158,222
+browse/test/sidepanel-reattach.test.ts
+  ai_agent 1-93
+test/gbrain-local-status.test.ts
+  ai_agent 24,164-171
+ios-qa/templates/DebugBridgeTouch.m.template
+  ai_agent 1-301
+land-and-deploy/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 687,1385-1426
+.github/workflows/actionlint.yml
+  ai_agent 5
+bin/gstack-memory-ingest.ts
+  ai_agent 57,67,197,817-820,1064,1275-1283,1288-1307,1320-1336,1358-1362,1416,1486-1491,1493-1502,1504-1506,1511-1525
+docs/gbrain-sync.md
+  ai_agent 62,110-111,173
+ios-qa/scripts/gen-accessors-tool/Package.swift
+  ai_agent 1-40
+gstack/llms.txt
+  s_0faf5a49143757::t_a7da731aceecf3 37-41
+plan-devex-review/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 696,1515,1768-1839,2047-2071
+CHANGELOG.md
+  ai_agent 3-969
+test/fixtures/ios-qa/FixtureApp/Sources/DebugBridgeCore/StateServer.swift
+  ai_agent 1-569
+test/gstack-learnings-search.test.ts
+  ai_agent 15,27,29-35,38,68-80
+make-pdf/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 440
+VERSION
+  ai_agent 1
+browse/src/pty-session-lease.ts
+  ai_agent 1-137
+bin/gstack-brain-sync
+  ai_agent 139-143,260-261,385-387,389-391,415-417,420,429-433,436-438,445-476
+test/fixtures/ios-qa/FixtureApp/Tests/DebugBridgeCoreTests/StateServerSmokeTests.swift
+  ai_agent 1-107
+design/src/auth.ts
+  ai_agent 8-13,19,21-71,74-76,79,88-92,98-107,112,114-115,122-123,133-135
+ios-qa/templates/StateAccessor.swift.template
+  ai_agent 1-38
+supabase/verify-rls.sh
+  ai_agent 33-38
+bin/gstack-ios-qa-daemon
+  ai_agent 1-39
+design/test/daemon-tests-fixtures.ts
+  ai_agent 1-135
+extension/sidepanel.js
+  ai_agent 686,711-724,752-771,1086-1118
+test/timeline.test.ts
+  ai_agent 2,45-58,153-161
+ios-qa/scripts/gen-accessors.test.ts
+  ai_agent 1-358
+review/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 692,743,755,1010-1017,1132-1168,1190-1192,1266,1369,1541-1543,1545,1563,1578,1607
+scripts/resolvers/confidence.ts
+  ai_agent 9-15,40-75
+test/skill-validation.test.ts
+  ai_agent 1297,1299,1301-1304,1397-1417
+test/skill-e2e-ios-swift-build.test.ts
+  ai_agent 1-154
+test/fixtures/ios-qa/FixtureApp/Sources/FixtureApp/FixtureAppApp.swift
+  ai_agent 1-60
+bin/gstack-gbrain-supabase-provision
+  ai_agent 342,354,360-372
+test-setup.ts
+  ai_agent 1-53
+qa-only/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 689
+browse/test/cli-supervisor.test.ts
+  ai_agent 1-81
+plan-ceo-review/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 719,1543,1744-1815,2126-2150
+test/fixtures/ios-qa/FixtureApp/.gitignore
+  ai_agent 1-8
+browse/test/server-sanitize-surrogates.test.ts
+  ai_agent 1-129
+test/gbrain-lib-validate-varname.test.ts
+  ai_agent 1-98
+ios-qa/templates/Bridges.swift.template
+  ai_agent 1-308
+ios-qa/templates/DebugOverlay.swift.template
+  ai_agent 1-137
+bin/gstack-diff-scope
+  ai_agent 60
+browse/src/server.ts
+  ai_agent 29,46-48,61-63,69-105,112-119,136-140,213-244,387-389,415-419,421,432,439-461,626-629,632-634,639,641-660,698,701,738-745,748-754,757-823,828,831-845,849-852,857-858,861,865-869,872,874,917,1104-1107,1264-1286,1288-1289,1295-1301,1304-1307,1311,1320,1335,1338,1411-1436,1438-1501,1503-1510,1512-1515,1517-1523,1525-1530,1532-1537,1540-1562,1564-1565,1567-1578,1581-1587,1590-1628,1658-1668,1689,1748,1770-1773,1775-1788,1801,1803,1806,1813-1817,1829-2101,2259,2439-2443,2447,2450,2456,2577-2579,2583,2603-2606,2612-2613,2812-2816,2820,2828,2870-3011,3016,3023,3098,3139,3156-3170
+design/test/auth.test.ts
+  ai_agent 1-133
+plan-devex-review/SKILL.md.tmpl
+  ai_agent 779-780,832-833
+ios-qa/daemon/src/proxy.ts
+  ai_agent 1-111
+test/extension-pty-inject-invariant.test.ts
+  ai_agent 1-141
+design/src/serve.ts
+  ai_agent 4-15,78-80,85,200-205,207,213-216
+ios-fix/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 1-763
+test/gstack-next-version.test.ts
+  ai_agent 7-9,17,157-223,255,257-277
+ios-qa/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 1-883
+ios-qa/daemon/test/allowlist.test.ts
+  ai_agent 1-146
+retro/SKILL.md.tmpl
+  ai_agent 98-154
+.github/workflows/ci-image.yml
+  ai_agent 18
+test/conductor-env-shim.test.ts
+  ai_agent 1-46
+plan-tune/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 683
+test/global-discover.test.ts
+  ai_agent 346-433
+lib/gstack-memory-helpers.ts
+  ai_agent 22,125-129,164
+test/fixtures/golden/claude-ship-SKILL.md
+  ai_agent 766,1863,1924-1960,2002,2038-2040,2114,2217,2353-2355,2357,2375,2390,2419
+test/gbrain-supabase-provision.test.ts
+  ai_agent 413-495
+pair-agent/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 688
+bin/gstack-timeline-read
+  ai_agent 32,34-38
+bin/gstack-config
+  ai_agent 103,173-174,189-190
+ios-qa/daemon/src/single-instance.ts
+  ai_agent 1-171
+bin/gstack-gbrain-detect
+  ai_agent 21-22,46,103-113,231
+open-gstack-browser/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 687
+bin/gstack-telemetry-sync
+  ai_agent 110-116
+browse/test/content-security.test.ts
+  ai_agent 587-597
+ios-qa/daemon/src/audit.ts
+  ai_agent 1-91
+browse/test/terminal-agent-internal-handler.test.ts
+  ai_agent 1-51
+scripts/resolvers/design.ts
+  ai_agent 13,515,691,894-898,925-930,938,943-945,989-995
+SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 403
+USING_GBRAIN_WITH_GSTACK.md
+  ai_agent 19-28,60-62,66-78,87,122-150,229-230,256-275,343-361
+test/brain-sync-windows-paths.test.ts
+  ai_agent 1-66
+ios-qa/daemon/test/auth-mint.test.ts
+  ai_agent 1-103
+benchmark-models/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 405
+landing-report/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 688
+test/build-gbrain-env.test.ts
+  ai_agent 1-190
+bin/gstack-gbrain-lib.sh
+  ai_agent 30-42,45
+extension/sidepanel-terminal.js
+  ai_agent 45-52,58-106,198-378,466-477,489-548,555-564,568-575,578-580,602,627-640,645-646,652-658,668,670-687,696-699,716-744,751-897,974-981,985-986,990-992,997-1012,1014
+investigate/SKILL.md.tmpl
+  ai_agent 33,38,121-123
+browse/test/cli-setsid-daemonize.test.ts
+  ai_agent 1-75
+bin/gstack-artifacts-init
+  ai_agent 230-241,267-269,286-287
+context-save/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 674
+ios-fix/SKILL.md.tmpl
+  ai_agent 1-101
+ios-qa/daemon/test/session-tokens.test.ts
+  ai_agent 1-156
+browse/test/server-pty-lease-routes.test.ts
+  ai_agent 1-94
+ios-clean/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 1-766
+ios-qa/daemon/test/tunnel-bootstrap.test.ts
+  ai_agent 1-431
+test/docs-config-keys.test.ts
+  ai_agent 1-110
+test/fixtures/ios-qa/FixtureApp/Sources/FixtureApp/FixtureAppState.swift
+  ai_agent 1-32
+ios-sync/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 1-757
+.github/workflows/version-gate.yml
+  ai_agent 17
+browse/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 404
+design-html/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 677
+browse/test/pty-session-lease.test.ts
+  ai_agent 1-98
+browse/src/find-security-sidecar.ts
+  ai_agent 1-78
+browse/test/stealth-extended.test.ts
+  ai_agent 1-118
+lib/conductor-env-shim.ts
+  ai_agent 1-18
+browse/src/browser-manager.ts
+  ai_agent 43-119,201-205,310-319,328-331,336-344,346,511-514,642-649,653-661,663-680,1416-1419,1449-1451,1453,1456
+test/fixtures/ios-qa/FixtureApp/Sources/DebugBridgeTouch/DebugBridgeTouch.m
+  ai_agent 1-301
+ios-qa/scripts/gen-accessors.ts
+  ai_agent 1-309
+test/gstack-developer-profile.test.ts
+  ai_agent 442-558
+browse/test/findport.test.ts
+  ai_agent 4,32-72
+retro/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 689,818-873
+browse/test/build-command-response.test.ts
+  ai_agent 1-68
+scripts/resolvers/review-army.ts
+  ai_agent 33-35,109,221
+test/helpers/touchfiles.ts
+  ai_agent 363-375,642-649
+browse/test/security-sidecar-client.test.ts
+  ai_agent 1-66
+browse/test/terminal-agent-ring-buffer-runtime.test.ts
+  ai_agent 1-154
+design/src/evolve.ts
+  ai_agent 55,67
+ios-qa/templates/DebugBridgeTouch.h.template
+  ai_agent 1-34
+test/relink.test.ts
+  ai_agent 190-220
+.github/workflows/windows-setup-e2e.yml
+  ai_agent 1-96
+test/no-stale-gstack-brain-refs.test.ts
+  ai_agent 58-60
+document-generate/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 677
+browse/test/browser-manager-unit.test.ts
+  ai_agent 1-2,19-227
+test/diff-scope.test.ts
+  ai_agent 143-148
+autoplan/SKILL.md.tmpl
+  ai_agent 772-773,824-827
+ios-qa/templates/DebugBridgeWiring.swift.template
+  ai_agent 1-43
+scrape/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 688
+browse/src/screenshot-size-guard.ts
+  ai_agent 1-106
+browse/src/security-classifier.ts
+  ai_agent 138,147-169
+ios-qa/daemon/test/single-instance.test.ts
+  ai_agent 1-96
+test/skill-e2e-plan.test.ts
+  ai_agent 243-249,696-707,797-798
+README.md
+  ai_agent 237-238,248-249,390,395,397,415-416,464
+test/gstack-gbrain-sync.test.ts
+  ai_agent 10-11,16-22,58-64,232-287,549-863
+test/gbrain-init-voyage-code-3.test.ts
+  ai_agent 1-184
+browse/test/sanitize.test.ts
+  ai_agent 1-112
+setup-gbrain/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 674,775-782,989-996,999-1000,1080-1088
+ios-qa/daemon/src/allowlist.ts
+  ai_agent 1-114
+bin/gstack-relink
+  ai_agent 49-59
+investigate/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 33,38,711,804-806
+scripts/build-app.sh
+  ai_agent 97-99,182-186
+.gitignore
+  ai_agent 7
+test/upgrade-migration-v1.test.ts
+  ai_agent 29-32,35
+gstack-upgrade/migrations/v1.38.1.0.sh
+  ai_agent 1-102
+scripts/resolvers/tasks-section.ts
+  ai_agent 1-168
+design-shotgun/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 692,1123-1128,1136,1141-1143,1187-1193
+plan-eng-review/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 694,922-958,1181,1388-1459,1690-1714
+ios-qa/daemon/src/tailscale-localapi.ts
+  ai_agent 1-120
+ship/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 693,1790,1851-1887,1929,1965-1967,2041,2144,2280-2282,2284,2302,2317,2346
+test/fixtures/ios-qa/FixtureApp/Sources/DebugBridgeTouch/include/DebugBridgeTouch.h
+  ai_agent 1-34
+test/resolvers-gbrain-put-rewrite.test.ts
+  ai_agent 1-63
+ios-qa/daemon/test/tailscale-localapi.test.ts
+  ai_agent 1-55
+browse/test/security-classifier-download-cleanup.test.ts
+  ai_agent 1-138
+context-restore/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 674
+test/gstack-memory-ingest.test.ts
+  ai_agent 424-433
+browse/test/skill-token.test.ts
+  ai_agent 14,25-27
+design/src/iterate.ts
+  ai_agent 85,98,133,145
+design/test/feedback-roundtrip.test.ts
+  ai_agent 58,70,139,142-145,147
+ios-qa/daemon/src/session-tokens.ts
+  ai_agent 1-126
+browse/src/content-security.ts
+  ai_agent 15,171,185
+browse/test/dual-listener.test.ts
+  ai_agent 134-136,139-150,295-296
+.github/workflows/skill-docs.yml
+  ai_agent 5
+scripts/task-emission-schema.ts
+  ai_agent 1-61
+scripts/write-version-files.sh
+  ai_agent 1-13
+test/fixtures/ios-qa/FixtureApp/Sources/FixtureApp/Info.plist
+  ai_agent 1-34
+test/gbrain-source-gitignore.test.ts
+  ai_agent 1-96
+test/explain-level-config.test.ts
+  ai_agent 31-33,35,65-71
+ios-qa/templates/Package.swift.template
+  ai_agent 1-67
+test/learnings-injection.test.ts
+  ai_agent 32-39,46-47,53-60
+setup-browser-cookies/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 401
+health/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 672
+test/fixtures/ios-qa/FixtureApp/Package.swift
+  ai_agent 1-53
+test/static-no-legacy-writes.test.ts
+  ai_agent 1-144
+browse/test/terminal-agent-keepalive.test.ts
+  ai_agent 1-88
+bunfig.toml
+  ai_agent 1-8
+ios-qa/SKILL.md.tmpl
+  ai_agent 1-221
+ios-qa/daemon/src/devicectl.ts
+  ai_agent 1-329
+design/test/daemon-discovery.test.ts
+  ai_agent 1-580
+design/test/serve.test.ts
+  ai_agent 68-70,119,123-129,314,317-319,378-409
+browse/src/terminal-agent-control.ts
+  ai_agent 1-143
+browse/src/meta-commands.ts
+  ai_agent 14,140,153-162,510-513,534,585
+browse/test/browser-skill-commands.test.ts
+  ai_agent 15,29-31,181-191,306-314,333-338
+ios-qa/daemon/src/tunnel-bootstrap.ts
+  ai_agent 1-174
+review/SKILL.md.tmpl
+  ai_agent 41,75-82
+browse/test/terminal-agent-detach-reattach.test.ts
+  ai_agent 1-127
+setup
+  ai_agent 77-117,304-334,351-352,411-412,421-422,431-432,516,522-537,539-543,578-584,626-631,669,694,705,731,734,737,740,743,748,753,771,774,777,780,783,787,791,809,812,815,818,821,824,828,832,835,838,841,844,870,902,1014,1028,1074,1086,1096,1136-1138,1141,1145,1150
+benchmark/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 405
+browse/src/security-sidecar-entry.ts
+  ai_agent 1-120
+design/src/variants.ts
+  ai_agent 61,73
+plan-design-review/SKILL.md.tmpl
+  ai_agent 375-376,480-481
+AGENTS.md
+  ai_agent 78-96
+browse/test/server-auth.test.ts
+  ai_agent 28,30,66,72,196-197,199,317,338-346
+test/gbrain-sync-voyage-code-3-integration.test.ts
+  ai_agent 1-328
+docs/skills.md
+  ai_agent 57-61,1186-1260
+package.json
+  ai_agent 3,12
+test/skill-e2e-ios-device.test.ts
+  ai_agent 1-172
+plan-design-review/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 692,1061-1066,1074,1079-1081,1125-1131,1183,1527-1598,1858-1882
+design/src/generate.ts
+  ai_agent 40,54
+setup-deploy/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 673
+bin/gstack-developer-profile
+  ai_agent 20-22,160-218,233-239,244-245,511
+browse/src/read-commands.ts
+  ai_agent 17,54,65,120,122,130,178
+lib/gbrain-local-status.ts
+  ai_agent 38,55-60,111,114,117,230-237,243
+design-review/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 693,1617
+ios-design-review/SKILL.md.tmpl
+  ai_agent 1-105
+devex-review/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 693
+bin/gstack-paths
+  ai_agent 12,24-28
+browse/src/sanitize.ts
+  ai_agent 1-34
+test/investigate-freeze-path.test.ts
+  ai_agent 1-25
+ios-qa/docs/tailscale-acl-example.md
+  ai_agent 1-157
+bin/gstack-gbrain-sync.ts
+  ai_agent 35,38,42,83-191,274,276-281,285-287,293-294,299-306,309,333-487,492-495,514-525,527-528,650,657-660,664,666,673-690,695,708-723,725-726,729,735,740-758,768,771,773-793,814-820,837-869,886-904,911-918,921-922,1097-1103
+test/benchmark-cli.test.ts
+  ai_agent 166-192
+test/skill-e2e-ios.test.ts
+  ai_agent 1-484
+docs/gbrain-sync-errors.md
+  ai_agent 26,203
+browse/src/cli.ts
+  ai_agent 14,20,243-256,258,273-280,282-283,1036-1039,1041-1047,1057-1145
+ios-design-review/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 1-767
+ios-qa/daemon/test/cli-mint.test.ts
+  ai_agent 1-119
+scripts/resolvers/index.ts
+  ai_agent 14,25,43,82-83
+test/gbrain-exec-invariant.test.ts
+  ai_agent 1-80
+design/test/daemon.test.ts
+  ai_agent 1-534
+docs/howto-ios-testing-with-gstack.md
+  ai_agent 1-180
+test/fixtures/golden/factory-ship-SKILL.md
+  ai_agent 757,1854,1915-1951,1993,2029-2031,2105,2208,2344-2346,2348,2366,2381,2410
+ios-qa/daemon/src/types.ts
+  ai_agent 1-91
+browse/src/find-browse.ts
+  ai_agent 8,27-55,65-66,68-77,83-84
+lib/gbrain-exec.ts
+  ai_agent 1-216
+test/helpers/e2e-helpers.ts
+  ai_agent 8
+test/regression-1539-review-self-verify.test.ts
+  ai_agent 1-105
+design/src/daemon.ts
+  ai_agent 1-582
+browse/test/terminal-agent-pid-identity.test.ts
+  ai_agent 1-161
+bin/gstack-model-benchmark
+  ai_agent 27,43-45,47,49-51,55-76,106
+bin/gstack-gbrain-install
+  ai_agent 134-143,145-151,197-218,220-229
+browse/test/terminal-agent-watchdog.test.ts
+  ai_agent 1-91
+browse/test/find-browse.test.ts
+  ai_agent 50-60
+autoplan/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 696,1527-1601,1652-1655
+.github/workflows/windows-free-tests.yml
+  ai_agent 3,11-17,21,36-37,102-104,115-119
+bin/gstack-artifacts-url
+  ai_agent 52-64,98
+bin/gstack-ios-qa-mint
+  ai_agent 1-28
+browse/test/screenshot-size-guard.test.ts
+  ai_agent 1-118
+design/test/feedback-roundtrip-daemon.test.ts
+  ai_agent 1-257
+ios-qa/daemon/test/daemon-integration.test.ts
+  ai_agent 1-350
+canary/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 670
+plan-eng-review/SKILL.md.tmpl
+  ai_agent 267-268,343-344
+browse/src/security-sidecar-client.ts
+  ai_agent 1-231
+test/gstack-artifacts-url.test.ts
+  ai_agent 70-87
+design/src/cli.ts
+  ai_agent 28-34,36-40,49,62-63,67,77-78,125,156-161,163-173,276-286,288-377,406-421
+ARCHITECTURE.md
+  ai_agent 147-161
+browse/src/snapshot.ts
+  ai_agent 25-26,422,543,583,630,633
+test/fixtures/ios-qa/FixtureApp/Sources/DebugBridgeCore/DebugBridgeManager.swift
+  ai_agent 1-49
+test/land-and-deploy-postfail.test.ts
+  ai_agent 1-111
+test/gstack-upgrade-migration-v1_40_0_0.test.ts
+  ai_agent 1-324
+browse/src/stealth.ts
+  ai_agent 2,4,6-34,37,40-43,48-178,182-184,190-191,196-200
+gstack-upgrade/migrations/v1.40.0.0.sh
+  ai_agent 1-142
+browse/test/terminal-agent-session-routing.test.ts
+  ai_agent 1-96
+ios-qa/daemon/test/proxy-classify.test.ts
+  ai_agent 1-47
+qa/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 695
+scripts/build.sh
+  ai_agent 1-38
+test/regression-1624-retro-stale-base.test.ts
+  ai_agent 1-146
+scripts/resolvers/preamble/generate-completion-status.ts
+  ai_agent 55
+test/regression-pr1169-mktemp-fallbacks.test.ts
+  ai_agent 1-82
+lib/gbrain-sources.ts
+  ai_agent 56,167
+test/regression-1611-gbrain-sync-resume.test.ts
+  ai_agent 1-227
+CONTRIBUTING.md
+  ai_agent 336-337,347
+browse/src/write-commands.ts
+  ai_agent 14,1127-1130
+TODOS.md
+  ai_agent 3-127
+test/setup-conductor-worktree.test.ts
+  ai_agent 11,14-15
+sync-gbrain/SKILL.md.tmpl
+  ai_agent 104-106,119-120,191,193-209
+browse/test/server-embedder-terminal-port.test.ts
+  ai_agent 1-232
+test/gstack-gbrain-detect-mcp-mode.test.ts
+  ai_agent 270-273
+test/gen-skill-docs.test.ts
+  ai_agent 1093,1099-1102,2203,2243-2244,2276-2289,2365,2721-2736,3131-3155
+design/src/daemon-state.ts
+  ai_agent 1-220
+.github/workflows/evals-periodic.yml
+  ai_agent 18,59
+ios-qa/daemon/test/audit.test.ts
+  ai_agent 1-111
+test/fixtures/golden/codex-ship-SKILL.md
+  ai_agent 755,1825,1886-1921
+codex/SKILL.md.tmpl
+  ai_agent 45,166-167,169-171,178-180,186-192,228-231,302-303,376-381,529-534,557-562
+test/gstack-paths.test.ts
+  ai_agent 44-59,61-62,65
+browse/test/sidepanel-patient-autoconnect.test.ts
+  ai_agent 1-70
+ios-clean/SKILL.md.tmpl
+  ai_agent 1-104
+browse/test/sidebar-ux.test.ts
+  ai_agent 1592-1598
+ios-qa/templates/StateServer.swift.template
+  ai_agent 1-569
+skillify/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 689
+design-consultation/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 716,1020,1237-1242,1250,1255-1257,1301-1307
+design/src/compare.ts
+  ai_agent 394-404,479-480,523,537,577,592
+test/fixtures/ios-qa/FixtureApp/Sources/DebugBridgeUI/Bridges.swift
+  ai_agent 1-308
+ios-sync/SKILL.md.tmpl
+  ai_agent 1-95
+browse/test/token-registry.test.ts
+  ai_agent 9,14-17,339-342
+test/setup-windows-fallback.test.ts
+  ai_agent 1-128
+test/fixtures/ios-qa/FixtureApp/project.yml
+  ai_agent 1-49
+land-and-deploy/SKILL.md.tmpl
+  ai_agent 617-659
+scripts/preflight-agent-sdk.ts
+  ai_agent 19
+test/memory-ingest-no-put_page.test.ts
+  ai_agent 1-54
+sync-gbrain/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 674,751-753,766-767,838,840-856
+test/gstack-brain-context-load.test.ts
+  ai_agent 10,12,30-60,238-254
+design/src/commands.ts
+  ai_agent 39-40,74-80
+.github/workflows/make-pdf-gate.yml
+  ai_agent 25,51
+ios-qa/daemon/src/cli-mint.ts
+  ai_agent 1-149
+test/artifacts-init-migration.test.ts
+  ai_agent 1-333
+browse/test/pty-inject-scan.test.ts
+  ai_agent 1-76
+bin/gstack-global-discover.ts
+  ai_agent 276-282,285-286,289-292
+ios-qa/daemon/src/auth-mint.ts
+  ai_agent 1-85
+test/regression-pr1169-build-app-sed.test.ts
+  ai_agent 1-161
+browse/src/token-registry.ts
+  ai_agent 150-159,525-533
+bin/gstack-next-version
+  ai_agent 13-20,55,125-146,161,165,167,173,220-221,224,229-231,252,280,283,286-288,325,348,386,392,400,417,434,440-441,456,458,476,496,510
+browse/test/sidepanel-restart-dispose.test.ts
+  ai_agent 1-106
+design/src/daemon-client.ts
+  ai_agent 1-419
+test/setup-codesign.test.ts
+  ai_agent 36-41
+bin/gstack-learnings-search
+  ai_agent 30-32,35-39,42,46-54,56-63,72,74-76,90
+codex/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 690,744,865-866,868-870,877-879,885-891,927-930,1085-1109,1182-1187,1335-1340,1363-1368
+bin/gstack-brain-context-load.ts
+  ai_agent 195-198
+docs/designs/FIX_1671_PROFILE_MIGRATION.md
+  ai_agent 1-81
+cso/SKILL.md
+  s_0faf5a49143757::t_a7da731aceecf3 675,1202-1237
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "6e1824e3521643ca1873c6baef35be5006242c7a",
+  "prompts": {},
+  "sessions": {
+    "s_0faf5a49143757": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "97d084fb-d647-4d70-8f37-012be546761f",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Donovan Yohan <34756395+donovan-yohan@users.noreply.github.com>"
+    }
+  }
+}
