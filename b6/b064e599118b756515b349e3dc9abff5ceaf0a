@@ -1,0 +1,575 @@
+browse/test/restart-env.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-39
+lib/redact-engine.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-479
+ship/sections/plan-completion.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-322
+test/skill-budget-regression.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 38-62,165-198,207-214
+bin/gstack-question-log
+  s_f415b0f6e9690d::t_5b05a3b055098f 31-32,53-55,61-94,204-246
+browse/src/memory-command.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-115
+make-pdf/src/pdftotext.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 117-144
+design-review/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,23-32,94-106,210,297-326,359-361,561,609-613
+scripts/resolvers/preamble/generate-context-health.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1,3-4
+scripts/resolvers/redact-doc.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-177
+spec/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-765
+test/helpers/parity-harness.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-297
+SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,20-27,89-101,205,434,893
+document-generate/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 381-394
+test/gstack-settings-hook-schema-aware.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-302
+office-hours/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 74-75,608-610
+bin/gstack-codex-session-import
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-223
+bin/gstack-developer-profile
+  s_f415b0f6e9690d::t_5b05a3b055098f 31-32
+codex/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,21-31,93-105,209,296-325,358-360,560,608-612
+retro/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,39-47,109-121,225,312-341,374-376,576,624-628
+scripts/resolvers/preamble/generate-routing-injection.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 36
+scripts/resolvers/preamble.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 108-109,111
+ship/sections/tests.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-93
+scrape/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 4,19-28,90-102,206,293-322,355-357,557,605-609
+test/skill-coverage-matrix.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-193
+test/gstack-schema-pack.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-150
+browse/src/write-commands.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 21,1413-1416
+extension/sidepanel.js
+  s_f415b0f6e9690d::t_5b05a3b055098f 295-582,1184,1188-1193
+make-pdf/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 44-50
+test/question-log-hook.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-285
+benchmark-models/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,19-30,92-104,208
+test/distill-free-text.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-205
+test/touchfiles.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 108-113
+browse/src/memory-snapshot.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-73
+scripts/resolvers/preamble/generate-confusion-protocol.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-4
+test/fixtures/golden/codex-ship-SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 96-108,240,327-356,389-391,591,639-643,808-811,2105-2107,2109,2111-2126,2129,2131-2135,2426,2480-2512,2535-2564,2569-2570,2617-2646
+test/helpers/budget-override.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-116
+scripts/resolvers/sections.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-96
+bin/gstack-config
+  s_f415b0f6e9690d::t_5b05a3b055098f 11-12,17,78-87,123-137,142-250,254-257,260-261,270-272,275-280,290-304,334,350,354-407,409
+ship/sections/adversarial.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-19
+lib/gbrain-sources.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 14,30-60,91,105,112,165,179,205,212
+scripts/psychographic-signals.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 191-206
+hosts/claude/hooks/question-preference-hook
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-7
+plan-eng-review/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 6,24-35,97-109,213,300-329,362-364,564,612-616,718-749,1681-1729
+design-consultation/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,46-54,116-128,232,319-348,381-383,583,631-635
+test/ship-plan-completion-invariants.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 5-18,21
+gstack/llms.txt
+  s_f415b0f6e9690d::t_5b05a3b055098f 64,144
+plan-ceo-review/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 225-226,859-861
+docs/spikes/claude-code-hook-mutation.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-193
+test/resolver-entry.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-186
+bin/gstack-brain-cache
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-949
+skillify/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 4,19-28,90-102,206,293-322,355-357,557,605-609
+ios-fix/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,22-35,97-109,213,300-329,362-364,564,612-616
+BROWSER.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 320
+test/distill-apply.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-300
+sync-gbrain/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,23-30,92-104,208,295-324,357-359,559,607-611,677-678,683-695,706-728,920-924
+test/parity-sectioned.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-88
+setup-browser-cookies/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,18-24,86-98,202
+plan-devex-review/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 139-140,792-796
+test/gstack-state-root-override.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-159
+make-pdf/test/e2e/emoji-gate.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-197
+setup-deploy/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,22-31,93-105,209,296-325,358-360,560,608-612
+design-shotgun/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,41-49,111-123,227,314-343,376-378,578,626-630
+ship/sections/adversarial.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-168
+test/brain-preflight.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-166
+test/gstack-redact-cli.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-97
+test/resolvers-gbrain-put-rewrite.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 38-46,49
+test/skill-e2e-spec-execute.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-45
+scripts/brain-cache-spec.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-268
+ios-design-review/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,20-34,96-108,212,299-328,361-363,563,611-615
+test/gbrain-detect-install.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 207-222,229-230,238-239
+make-pdf/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,19-29,91-103,243,472-477
+make-pdf/test/render.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 346-385
+docs/spikes/codex-session-format.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-171
+test/helpers/touchfiles.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 123-124,153,195-201,385-417,465-471,512,528,576-582,708-709,734-736
+test/skill-preflight-budget.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-96
+test/cache-concurrent-refresh.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-153
+scripts/proactive-suggestions.json
+  s_f415b0f6e9690d::t_b5970188d48fa0 167,182-183
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-166,168-181,184-272
+ship/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 74-77,146,148,150,152,154,156,160-162,164,166-181,184,186-190,192,398,426-455
+plan-devex-review/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 6,24-37,99-111,215,302-331,364-366,566,614-618,936-971,2019-2070
+lib/gbrain-local-status.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 38,116,139,246
+bin/gstack-distill-apply
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-181
+ship/sections/plan-completion.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-31
+test/fixtures/parity-baseline-v1.44.1.json
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-623
+test/gbrain-sources-parse.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-49
+test/redact-semantic-pass.eval.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-86
+test/spec-template-invariants.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-286
+sync-gbrain/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 55-56,61-73,84-106,298-302
+test/template-context-parity.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-58
+ship/sections/test-coverage.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-23
+scripts/resolvers/types.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 65-80,85-117
+browse/src/commands.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 48,93
+bin/gstack-redact
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-228
+test/skill-e2e-gbrain-roundtrip-local.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-162
+setup-gbrain/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,24-30,92-104,208,295-324,357-359,559,607-611,1493-1560
+.github/workflows/make-pdf-gate.yml
+  s_f415b0f6e9690d::t_5b05a3b055098f 54-62,86,89
+browse/test/cdp-session-cleanup.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-171
+test/redact-doc-resolver.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-96
+ship/sections/pr-body.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-207
+scripts/question-registry.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 458,467
+test/salience-allowlist.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-95
+VERSION
+  s_f415b0f6e9690d::t_5b05a3b055098f 1
+test/resolvers-gbrain-save-results.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-137
+design-html/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,23-35,97-109,213,300-329,362-364,564,612-616
+docs/designs/v2_PLAN.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-755
+docs/askuserquestion-split.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-216
+investigate/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,59-69,131-143,247,334-363,396-398,598,646-650
+bin/gstack-uninstall
+  s_f415b0f6e9690d::t_5b05a3b055098f 235-238
+CLAUDE.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 147,330-349,454-491,980-984
+hosts/claude/hooks/question-log-hook.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-289
+review/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,25-32,94-106,210,297-326,359-361,561,609-613
+test/regression-1539-review-self-verify.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 86-98,101
+README.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 212
+browse/src/cdp-bridge.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 28-101,105
+test/writing-style-resolver.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 52,54-62
+ship/sections/manifest.json
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-56
+scripts/declared-annotation.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-125
+test/setup-sections-linking.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-48
+test/memory-cache-injection.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-220
+ship/sections/review-army.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-405
+test/memory-ingest-timeout.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-27
+test/skill-validation.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 10-25,334-335,457,550,777,1003,1052,1101,1109,1117,1123,1128,1134,1139,1146,1156,1192,1370,1380,1416-1417,1433-1434,1447,1471-1475,1479,1491-1492,1702,1707,1712,1721,1727,1732
+document-generate/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,26-34,96-108,212,299-328,361-363,563,611-615,1041-1053
+plan-tune/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,26-40,102-114,218,305-334,367-369,569,617-621,678-700,702,704,706,708-716,719-720,724-728,730-737,741,744,746,749-750,752,758,766-785,790-806,859-867,870,891,897-902,1050-1053,1059-1080,1089-1090,1095-1256
+test/ship-template-redaction.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-67
+test/gstack-question-preference.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 106-164
+make-pdf/test/fixtures/emoji-gate.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-12
+USING_GBRAIN_WITH_GSTACK.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 139,382
+TODOS.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 3-156,739-756,1942-1984,2092-2253
+scripts/resolvers/preamble/generate-ask-user-format.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 49-78,111-113
+test/catalog-trim.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-316
+browse/test/memory-leak-reproducer.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-132
+health/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,22-30,92-104,208,295-324,357-359,559,607-611
+hosts/claude/hooks/question-log-hook
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-7
+benchmark/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,20-30,92-104,208
+bin/gstack-settings-hook
+  s_f415b0f6e9690d::t_5b05a3b055098f 2,4-23,31-41,50-60,63-70,74,78,82,85-86,88,90,92-96,98-100,103,106,111-115,117-241,243-258,260-280,282
+ship/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,25-32,94-106,210,297-326,359-361,561,609-613,751-768,886-887,889-890,892-893,895-896,898-899,901-902,904,906-908,910-930,932-936,938-939,941,943,945,947,949-953,955,957-960,962-966,968,970,972-974,976-979,981,983,985-988,990,992,994,996,998,1000-1003,1005,1007-1008,1011,1013,1016-1020,1023,1025-1026,1028-1040,1042-1051,1053-1054,1056-1061,1063,1065,1067,1069-1073,1075-1081,1083,1085-1088,1090-1092,1094-1097,1099,1101,1103,1105,1107,1109,1111-1115,1117,1119,1121,1123,1125,1128-1132,1135,1138,1141,1145-1146,1148,1150,1153,1156,1159,1162-1168,1170,1172,1174,1176-1177,1180-1188,1191-1193,1195,1197,1199-1203
+ios-sync/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,22-32,94-106,210,297-326,359-361,561,609-613
+test/brain-cache-spec.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-169
+test/gbrain-spawn-windows-shell.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-45
+test/gstack-version-bump.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-133
+CONTRIBUTING.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 329,334
+ship/sections/changelog.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-45
+browse/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,19-28,90-102,206,851
+spec/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-51,54-58,60-70,72-506,508-611,613-989,992-996,998-1008,1010-1444,1446-1549,1551-2092
+  s_f415b0f6e9690d::t_b5970188d48fa0 52-53,59,71,507,612,990-991,997,1009,1445,1550
+bin/gstack-distill-free-text
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-272
+scripts/resolvers/preamble/generate-completeness-section.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1,3-4
+pair-agent/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 4,18-29,91-103,207,294-323,356-358,558,606-610
+test/gbrain-guards.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-140
+test/setup-emoji-font.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-172
+test/helpers/budget-override.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-50
+test/catalog-mode-full.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-121
+qa-only/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,20-30,92-104,208,295-324,357-359,559,607-611
+test/document-skills-redaction.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-37
+CHANGELOG.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 3-593
+test/fixtures/parity-baseline-v1.53.0.0.json
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-633
+test/skill-e2e-plan-tune-cathedral.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-458
+test/helpers/required-reads.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-40
+test/section-manifest-consistency.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-77
+ship/sections/review-army.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-55
+context-save/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,22-31,93-105,209,296-325,358-360,560,608-612
+test/skill-e2e-plan-ceo-split-overflow.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-108
+canary/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,20-28,90-102,206,293-322,355-357,557,605-609
+browse/test/memory-command.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-247
+hosts/claude/hooks/question-preference-hook.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-459
+browse/src/meta-commands.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1164-1170
+test/helpers/capture-parity-baseline.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-90
+test/redact-engine-autoredact.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-63
+document-release/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,22-32,94-106,210,297-326,359-361,561,609-613,1039-1048
+ship/sections/greptile.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-49
+browse/src/cli.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 214-293,302-308,576-583,586,588-598,604-611,1072-1076,1114-1118,1286-1290,1350-1354
+browse/src/sse-helpers.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-154
+docs/gbrain-write-surfaces.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-208
+browse/src/cdp-inspector.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 16,110-121,123-126,142-152,154-176,605,615-620,673-689,716
+plan-eng-review/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 78-79,326-328
+SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 35
+test/helpers/transcript-section-logger.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-196
+test/parity-suite.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-56
+cso/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 162-168
+test/redact-engine.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-283
+scripts/discover-skills.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 29-56
+extension/sidepanel.css
+  s_f415b0f6e9690d::t_5b05a3b055098f 1140-1236
+test/resolver-ask-user-format.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 122-163
+lib/gbrain-exec.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 140-151,181,214,229
+bin/gstack-question-preference
+  s_f415b0f6e9690d::t_5b05a3b055098f 26-27,72-82
+scripts/capture-baseline.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-54
+open-gstack-browser/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 4,18-27,89-101,205,292-321,354-356,556,604-608
+test/question-preference-hook.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-385
+ios-clean/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,21-32,94-106,210,297-326,359-361,561,609-613
+scripts/gstack-schema-pack.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-281
+ship/sections/greptile.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-51
+test/cso-preserved.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-86
+test/gen-skill-docs-idempotency.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-159
+test/discover-section-templates.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-57
+test/fixtures/golden/claude-ship-SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,25-32,110-122,254,341-370,403-405,605,653-657,824-841,959-960,962-963,965-966,968-969,971-972,974-975,977,979-981,983-1003,1005-1009,1011-1012,1014,1016,1018,1020,1022-1026,1028,1030-1033,1035-1039,1041,1043,1045-1047,1049-1052,1054,1056,1058-1061,1063,1065,1067,1069,1071,1073-1076,1078,1080-1081,1084,1086,1089-1093,1096,1098-1099,1101-1113,1115-1124,1126-1127,1129-1134,1136,1138,1140,1142-1146,1148-1154,1156,1158-1161,1163-1165,1167-1170,1172,1174,1176,1178,1180,1182,1184-1188,1190,1192,1194,1196,1198,1201-1205,1208,1211,1214,1218-1219,1221,1223,1226,1229,1232,1235-1241,1243,1245,1247,1249-1250,1253-1261,1264-1266,1268,1270,1272-1276
+learn/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,22-30,92-104,208,295-324,357-359,559,607-611
+test/fixtures/parity-baseline-v1.46.0.0.json
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-623
+ios-qa/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,24-38,100-112,216,303-332,365-367,567,615-619
+unfreeze/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 4,16-21
+lib/redact-patterns.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-469
+test/redact-prepush-hook.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-153
+test/transcript-section-logger.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-136
+plan-tune/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 55-77,79,81,83,85-93,96-97,101-105,107-114,118,121,123,126-127,129,135,143-162,167-183,236-244,247,268,274-279,427-430,436-457,466-467,472-633
+bin/dev-setup
+  s_f415b0f6e9690d::t_5b05a3b055098f 59-75
+browse/test/sse-helpers.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-194
+browse/test/tab-guardrail.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-118
+test/redact-audit-log.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-103
+test/skill-size-budget.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-230
+devex-review/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,22-34,96-108,212,299-328,361-363,563,611-615
+scripts/resolvers/preamble/generate-writing-style.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 3-18,21,34
+test/spec-template-sync.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-34
+bin/gstack-memory-ingest.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1352-1373,1377,1410,1420,1635,1642-1661,1857-1865
+test/parity-baseline-integrity.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-145
+autoplan/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,24-36,98-110,214,301-330,363-365,565,613-617
+test/takes-fence-fallback.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-87
+test/skill-coverage-matrix.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-72
+test/skill-e2e-office-hours-brain-writeback.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-306
+cso/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,23-34,96-108,212,299-328,361-363,563,611-615,817-822
+test/gbrain-detection-override.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-193
+package.json
+  s_f415b0f6e9690d::t_5b05a3b055098f 3,17
+setup
+  s_f415b0f6e9690d::t_5b05a3b055098f 129,139-141,308-385,558-570,612-619,1277-1290,1406-1589
+test/schema-version-migration.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-108
+bin/gstack-jsonl-merge
+  s_f415b0f6e9690d::t_5b05a3b055098f 56-63,69,74
+test/terse-build.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-151
+make-pdf/src/print-css.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 23-32,35-42,105,108,111,128
+test/fixtures/forcing-finding-seeds.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 123-178
+AGENTS.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 24
+plan-design-review/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 141-142,453-457
+test/redact-pattern-lint.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-64
+bin/gstack-redact-prepush
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-146
+ship/sections/tests.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-349
+test/brain-cache-roundtrip.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-164
+test/plan-tune-gates.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-212
+test/skill-e2e-ship-section-loading.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-120
+test/declared-annotation.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-129
+test/fixtures/office-hours-brain-writeback/brief.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-30
+test/fixtures/parity-baseline-v1.47.0.0.json
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-634
+scripts/resolvers/index.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 2-4,6-14,17,33,37-38,40,43-44,93-95,102-103
+test/setup-plan-tune-hooks-noninteractive.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-123
+test/cso-spec-taxonomy-alignment.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-42
+test/user-slug-fallback.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-161
+qa/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,23-36,98-110,214,301-330,363-365,565,613-617
+bin/gstack-version-bump
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-212
+careful/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 4,23-30
+ship/sections/test-coverage.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-259
+bin/gstack-gbrain-sync.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 40-41,43,56-57,65,211-212,228,240,257,417,476-512,515-516,519,698-703,756-778,1020-1021,1025,1030
+test/skill-llm-eval-spec.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-47
+test/gen-skill-docs.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 11-28,176-187,190-208,371-377,381,533,566,682,688,756,765,922,986,1037,1066,1095,1111,1324-1325,1442,1459-1465,1502,1646,1949,2638,2788-2789,2803,2864
+test/plan-tune.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 538-546
+document-release/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 378-387
+test/jsonl-merge.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-96
+plan-design-review/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 6,22-31,93-105,209,296-325,358-360,560,608-612,943-976,1839-1890
+browse/test/server-sanitize-surrogates.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 116-154
+lib/gbrain-guards.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-266
+land-and-deploy/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,20-27,89-101,205,292-321,354-356,556,604-608
+landing-report/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 4,18-26,90-102,206,293-322,355-357,557,605-609
+test/gstack-codex-session-import.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-206
+scripts/resolvers/question-tuning.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 28-32
+freeze/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 4,29-36
+lib/redact-audit-log.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-89
+browse/src/browser-manager.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 21,25-26,200-244,671,1056-1165,1692,1761-1774,1777-1785,1788-1792
+test/fixtures/golden/factory-ship-SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 98-110,242,329-358,391-393,593,641-645,810-813,2483-2485,2487,2489-2504,2507,2509-2513,2804,2858-2890,2913-2942,2947-2948,2995-3024
+test/skill-e2e-ship-idempotency.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 200-204,211,214-215,217,219
+test/gstack-config-redact-keys.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-54
+gstack-upgrade/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 4,18-25
+scripts/resolvers/gbrain.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 9-10,13-18,21-53,58,60-62,64-66,69,76-94,98,100,103,105-106,108,113-173,175-180,182-269
+scripts/resolvers/preamble/generate-preamble-bash.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 77-89
+extension/sidepanel.html
+  s_f415b0f6e9690d::t_5b05a3b055098f 162-174,182
+ship/sections/changelog.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-3
+browse/src/server.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 41,727-731,2441-2447,2449-2450,2452-2453,2762-2787,2798-2807,2809,2811
+test/required-reads.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-41
+setup-gbrain/SKILL.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 871-939
+test/helpers/capture-parity-baseline.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-231
+ship/sections/pr-body.md.tmpl
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-205
+test/skill-coverage-floor.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-153
+browse/test/cdp-inspector-history-cap.test.ts
+  s_f415b0f6e9690d::t_5b05a3b055098f 1-95
+context-restore/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 5,22-32,94-106,210,297-326,359-361,561,609-613
+guard/SKILL.md
+  s_f415b0f6e9690d::t_5b05a3b055098f 4,34-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "b6b064e599118b756515b349e3dc9abff5ceaf0a",
+  "prompts": {},
+  "sessions": {
+    "s_f415b0f6e9690d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec9afc15-c859-41dc-93a3-65bb31bfcbb6",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Donovan Yohan <34756395+donovan-yohan@users.noreply.github.com>"
+    }
+  }
+}
